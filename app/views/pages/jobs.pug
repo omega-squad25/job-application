@@ -1,8 +1,14 @@
 extends ../layouts/main-layout
 
 block content
+  // Include the navbar component
+  include ../components/navbar
+
   h1.title jobs
   p This is the jobs page
+
+  // Include the navbar component
+  include ../components/footer
 
 block scripts
   script(src='/js/jobs.js')
