@@ -13,7 +13,46 @@ block content
         button.search-btn(type='submit')
           i.fas.fa-search
     hr.hr 
-    p This is the jobs page
+    div.card-section
+      div.card-container
+        // Include the card component and pass props
+        include ../components/card
+        +card('/assets/images/asma-logo.svg', 'ASMA Company', 'Software Engineer', 'Manchester, UK', '(Full-time)', 'Multiple Candidates')
+        +card('/assets/images/asma-logo.svg', 'ASMA Company', 'Software Engineer', 'Manchester, UK', '(Full-time)', 'Multiple Candidates')
+        +card('/assets/images/asma-logo.svg', 'ASMA Company', 'Software Engineer', 'Manchester, UK', '(Full-time)', 'Multiple Candidates')
+        +card('/assets/images/asma-logo.svg', 'ASMA Company', 'Software Engineer', 'Manchester, UK', '(Full-time)', 'Multiple Candidates')
+        +card('/assets/images/another-logo.svg', 'Another Company', 'Data Scientist', 'London, UK', '(Part-time)', 'Few Candidates')  
+        +card('/assets/images/another-logo.svg', 'Another Company', 'Data Scientist', 'London, UK', '(Part-time)', 'Few Candidates')  
+        +card('/assets/images/another-logo.svg', 'Another Company', 'Data Scientist', 'London, UK', '(Part-time)', 'Few Candidates')  
+        +card('/assets/images/another-logo.svg', 'Another Company', 'Data Scientist', 'London, UK', '(Part-time)', 'Few Candidates')  
+        +card('/assets/images/another-logo.svg', 'Another Company', 'Data Scientist', 'London, UK', '(Part-time)', 'Few Candidates')  
+        +card('/assets/images/another-logo.svg', 'Another Company', 'Data Scientist', 'London, UK', '(Part-time)', 'Few Candidates')  
+        +card('/assets/images/another-logo.svg', 'Another Company', 'Data Scientist', 'London, UK', '(Part-time)', 'Few Candidates')  
+        +card('/assets/images/another-logo.svg', 'Another Company', 'Data Scientist', 'London, UK', '(Part-time)', 'Few Candidates')  
+        +card('/assets/images/another-logo.svg', 'Another Company', 'Data Scientist', 'London, UK', '(Part-time)', 'Few Candidates')  
+      div.card-details
+         div.details-container
+            div.card-header-wrapper
+              div.card-header
+                div.company-details
+                  img(src='/assets/images/asma-logo.svg', alt='Company Logo')
+                  p.job-location ASMA Company
+                div.bookmark-icon  
+                  i.fa-regular.fa-bookmark
+              div.details-btn  
+                div 
+                  h2.job-title Software Engineer
+                  div.job-details
+                    p.job-location Manchester, UK
+                    p.job-type (Full-time)
+                button.easy-apply Easy Apply
+            div.job-data 
+              p Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime recusandae beatae inventore sit alias autem quia sunt, cupiditate culpa quisquam consequatur excepturi cumque aspernatur in ipsa blanditiis mollitia adipisci laudantium aperiam, illum magni! Ipsum voluptatum, temporibus magni aliquid asperiores iste! Officiis nisi deserunt placeat culpa tempora ab possimus ipsa corrupti maiores soluta animi suscipit, eveniet a dolore eos fugit. Maxime excepturi minus, obcaecati neque incidunt assumenda quod. Et assumenda at placeat minus odit, suscipit commodi alias vel optio. Quibusdam illo repellat deleniti placeat ullam ex officiis assumenda optio blanditiis perspiciatis voluptas veniam perferendis, aperiam totam iste maxime facilis! Eveniet obcaecati fuga sint quibusdam ratione incidunt excepturi repellendus iusto velit blanditiis. Quis vero suscipit dolores, error voluptas tenetur at, eaque tempore alias itaque facilis, consequuntur dolorem? Reiciendis minus, dolor, dignissimos magni corrupti at excepturi illo eum repellendus dolores inventore hic tempora voluptatibus quam, quos itaque qui asperiores vitae eius ex. Animi eligendi earum consequuntur aliquam vero quo eius voluptatem eaque architecto! Id culpa consequuntur enim odit dolore eaque ipsa error, commodi exercitationem ullam, corrupti, labore asperiores distinctio corporis tempore. Consequuntur odit ea, magnam explicabo sequi molestias, deleniti porro dolorem tempore saepe provident voluptates ut alias optio quaerat, minima blanditiis dolores illo?
+              p Lorem ipsum dolor sit, amet consectetur adipisicing elit. Placeat facilis exercitationem aliquam laudantium nobis ipsum adipisci. Id fuga totam aspernatur quam cupiditate nemo nobis iure, necessitatibus sit beatae autem in eligendi ex quasi animi quia architecto, facilis maxime praesentium odit perferendis explicabo. Assumenda quisquam dolorem deserunt vero, earum ex? Molestiae.
+              p Lorem ipsum dolor sit, amet consectetur adipisicing elit. Placeat facilis exercitationem aliquam laudantium nobis ipsum adipisci. Id fuga totam aspernatur quam cupiditate nemo nobis iure, necessitatibus sit beatae autem in eligendi ex quasi animi quia architecto, facilis maxime praesentium odit perferendis explicabo. Assumenda quisquam dolorem deserunt vero, earum ex? Molestiae.
+              p Lorem ipsum dolor sit, amet consectetur adipisicing elit. Placeat facilis exercitationem aliquam laudantium nobis ipsum adipisci. Id fuga totam aspernatur quam cupiditate nemo nobis iure, necessitatibus sit beatae autem in eligendi ex quasi animi quia architecto, facilis maxime praesentium odit perferendis explicabo. Assumenda quisquam dolorem deserunt vero, earum ex? Molestiae.
+        
+
 
   // Include the footer component
   include ../components/footer

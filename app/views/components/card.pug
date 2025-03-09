@@ -1,0 +1,22 @@
+mixin card(companyLogo, companyName, jobTitle, jobLocation, jobType, candidates)
+  div.card
+    div.card-item
+      div.card-header
+        div.company-details
+          img(src=companyLogo, alt='Company Logo')
+          p.job-location= companyName
+        div.bookmark-icon  
+          i.fa-regular.fa-bookmark
+      h2.job-title= jobTitle
+      div.job-details
+        p.job-location= jobLocation
+        p.job-type= jobType
+      div.btn-wrapper
+        div.btns
+          button.apply-btn View Details
+          div.candidates
+            p= candidates
+        p 1d
+
+block styles
+  link(rel='stylesheet', href='/css/jobs.css')              
