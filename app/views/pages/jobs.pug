@@ -6,10 +6,13 @@ block content
   
   div.container
     h1.title Kickstart Your Career Journey
-    search 
-      input(type='text', placeholder='Search for jobs')
-      button.search-btn Search
-    hr  
+    form.search-form
+      div.input-group
+        input.input(type='text', placeholder='Job titles')
+        input.input(type='text', placeholder='Location')
+        button.search-btn(type='submit')
+          i.fas.fa-search
+    hr.hr 
     p This is the jobs page
 
   // Include the footer component
