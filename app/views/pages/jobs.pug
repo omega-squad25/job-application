@@ -3,11 +3,16 @@ extends ../layouts/main-layout
 block content
   // Include the navbar component
   include ../components/navbar
+  
+  div.container
+    h1.title Kickstart Your Career Journey
+    search 
+      input(type='text', placeholder='Search for jobs')
+      button.search-btn Search
+    hr  
+    p This is the jobs page
 
-  h1.title jobs
-  p This is the jobs page
-
-  // Include the navbar component
+  // Include the footer component
   include ../components/footer
 
 block scripts
@@ -15,5 +20,3 @@ block scripts
 
 block styles
   link(rel='stylesheet', href='/css/jobs.css')
-
-
