@@ -1,8 +1,15 @@
 nav.navbar
-  ul.ul
-    li: a.link(href='/') Home
+  a.logo-link(href='/dashboard')
+    img(src='/assets/images/logo.png' alt='Logo' class='logo')
+  ul.navbar-menu
     li: a.link(href='/jobs') Jobs
-    li: a.link(href='/dashboard') Dashboard
+    li.divider | 
+    li: a.link(href='/login') Login
+    li.signup
+      a.link.signup-btn(href='/signup')
+        img(src='/assets/images/login-icon.svg' alt='Login Icon')
+        span SignUp
+
 
 block styles
   link(rel='stylesheet', href='/css/navbar.css')
