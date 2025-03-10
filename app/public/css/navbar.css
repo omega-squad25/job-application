@@ -36,11 +36,11 @@
 }
 
 .link:hover {
-  text-decoration: none !important; 
+  text-decoration: none !important;
 }
 
 .signup-btn {
-  background-color: #007aff;
+  background-color: #007aff !important;
   color: white !important;
   padding: 8px 15px;
   border-radius: 10px;
