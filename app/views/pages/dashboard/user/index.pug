@@ -1,0 +1,32 @@
+extends ../../../layouts/dashboard-layout
+
+block content
+  div.contents
+    div.personal-info
+      div.avatar-wrapper
+        img.avatar(src='/assets/images/avatar.png', alt='user-avatar', id='avatar')
+        label.camera-icon(for='avatar-upload')
+          i.fas.fa-camera
+        input#avatar-upload(type='file', accept='image/*', style='display: none;')
+      h1.name Philip Maya
+      p.text UI/UX Designer
+      p.text Manchester, UK
+
+    //- // Include the tab component
+    //- include ../../../components/tab
+
+    //- // Tab component
+    //- +tabComponent([
+    //-   { id: 'tab1', title: 'About', content: 'about' },
+    //-   { id: 'tab2', title: 'Resume', content: 'resume' },
+    //-   { id: 'tab3', title: 'My Jobs', content: 'my-jobs' }
+    //- ])
+
+block scripts
+  script(src='/js/dashboard.js')
+  script(src='/js/avatar-upload.js')
+  script(src='/js/tab.js')
+
+block styles
+  link(rel='stylesheet', href='/css/user.css')
+  link(rel='stylesheet', href='/css/tab.css')
