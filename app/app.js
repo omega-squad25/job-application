@@ -29,10 +29,28 @@ app.get("/db_test", function (req, res) {
   });
 });
 
-// Create a route for the dashboard page
+// // Create a route for the dashboard page
+// app.get("/dashboard", function (req, res) {
+//   res.render("pages/user", { title: "User Dashboard" });
+// });
+
+
+// Redirect the dashboard route to the user page
 app.get("/dashboard", function (req, res) {
-  res.render("pages/dashboard", { title: "User Dashboard" });
+  res.redirect("/dashboard/user/index");
 });
+
+// Create a route for the user dashboard page
+app.get("/dashboard/user", function (req, res) {
+  res.render("pages/dashboard/user/index", { title: "User Dashboard" });
+});
+
+// Create a route for the admin dashboard page
+app.get("/dashboard/admin", function (req, res) {
+  res.render("pages/dashboard/admin", { title: "Admin Dashboard" });
+});
+
+
 
 // Create a route for the jobs page
 app.get("/jobs", function (req, res) {

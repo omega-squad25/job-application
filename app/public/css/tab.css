@@ -1,0 +1,39 @@
+.tab-container {
+  margin-top: 20px;
+}
+
+.tab-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tab-item {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+  margin-right: 5px;
+}
+
+.tab-item.active {
+  border-color: #e2e8f0;
+  border-bottom: 1px solid white;
+  background-color: white;
+}
+
+.tab-content {
+  border: 1px solid #e2e8f0;
+  border-top: none;
+  padding: 20px;
+  border-radius: 0 0 10px 10px;
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
