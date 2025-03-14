@@ -1,13 +1,29 @@
 extends ../layouts/main-layout
 
 block content
-  h1.title login
+  h1.title Login
   p This is the login page
+
+
+
+  //- form(action='/dashboard/user' method='POST')
+  //-   div.input-group
+  //-     label(for='email') Email
+  //-     input(type='email' name='email' id='email' placeholder='Enter your email' required)
+  //-   div.input-group
+  //-     label(for='password') Password
+  //-     input(type='password' name='password' id='password' placeholder='Enter your password' required)
+  //-   div.input-group
+  //-     input(type='checkbox' name='remember' id='remember')
+  //-     label(for='remember') Remember me
+  //-   button(type='submit' class='login-btn') Login
+
+    
+  form(action='/dashboard/user' method='GET')
+    button(type='submit' class='login-btn') Login
 
 block scripts
   script(src='/js/login.js')
 
 block styles
   link(rel='stylesheet', href='/css/login.css')
-
-
