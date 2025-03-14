@@ -1,14 +1,15 @@
-nav.navbar
-  a.logo-link(href='/')
-    img(src='/assets/images/logo.png' alt='Logo' class='logo')
-  ul.navbar-menu
-    li: a.link(href='/jobs') Jobs
-    li.divider | 
-    li: a.link(href='/login') Login
-    li.signup
-      a.link.signup-btn(href='/signup')
-        img(src='/assets/images/login-icon.svg' alt='Login Icon')
-        span SignUp
+nav.navbar-container
+  div.navbar-contents
+    a.logo-link(href='/')
+      img(src='/assets/images/logo.png' alt='Logo' class='logo')
+    ul.navbar-menu
+      li: a.link(href='/jobs') Jobs
+      li.divider | 
+      li: a.link(href='/login') Login
+      li.signup
+        a.link.signup-btn(href='/signup')
+          img(src='/assets/images/login-icon.svg' alt='Login Icon')
+          span SignUp
 
 
 block styles
