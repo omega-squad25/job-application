@@ -1,11 +1,69 @@
 block content
- 
-  div.contents
-    h1.title about
-    p This is the about dashboard page content.
+  div.about-contents
+    h1.about-title About
+    p.about-text Updating your information will offer you the most relevant content 
+    div.about-info
+      div.about-info-item.modal-trigger(data-target='#modal-skills', style='cursor: pointer;')
+        p Add skills
+        i.fa-solid.fa-plus.modal-trigger(data-target='#modal-skills', style='cursor: pointer;')
+      div.about-info-item.modal-trigger(data-target='#modal-experience', style='cursor: pointer;')
+        p Add work experience
+        i.fa-solid.fa-plus.modal-trigger(data-target='#modal-experience', style='cursor: pointer;')
+      div.about-info-item.modal-trigger(data-target='#modal-education', style='cursor: pointer;')
+        p Add education
+        i.fa-solid.fa-plus.modal-trigger(data-target='#modal-education', style='cursor: pointer;')
+
+    // Include the modal component for skills
+    div#modal-skills.modal-overlay.hidden
+      div.modal
+        div.modal-header
+          h2.modal-title Skills
+          span.modal-close &times;
+        div.modal-body
+          form
+            div.form-group
+              label(for='skill') Skill
+              input#skill(type='text', name='skill', placeholder='JavaScript', required)
+            div.form-group
+              label(for='experience') Years of Experience
+              select#experience(name='experience', required)
+                option(value='') Select years of experience
+                option(value='1') 1 year
+                option(value='2') 2 years
+                option(value='3') 3 years
+                option(value='4') 4 years
+                option(value='5') 5 years
+                option(value='5+') More than 5 years
+        div.modal-footer
+          button.modal-close-btn Cancel
+          button.modal-save-btn Save
+
+    // Include the modal component for work experience
+    div#modal-experience.modal-overlay.hidden
+      div.modal
+        div.modal-header
+          h2.modal-title Work Experience
+          span.modal-close &times;
+        div.modal-body
+          p This is the content inside the work experience modal.
+        div.modal-footer
+          button.modal-close-btn Close
+
+    // Include the modal component for education
+    div#modal-education.modal-overlay.hidden
+      div.modal
+        div.modal-header
+          h2.modal-title Education
+          span.modal-close &times;
+        div.modal-body
+          p This is the content inside the education modal.
+        div.modal-footer
+          button.modal-close-btn Close
 
 block scripts
   script(src='/js/about.js')
+  script(src='/js/modal.js')
 
 block styles
   link(rel='stylesheet', href='/css/about.css')
+  link(rel='stylesheet', href='/css/modal.css')
