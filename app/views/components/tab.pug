@@ -1,0 +1,17 @@
+mixin tabComponent(tabs)
+  div.tab-container
+    ul.tab-list
+      each tab, index in tabs
+        li.tab-item(class=(index === 0 ? 'active' : ''), data-tab=tab.id) #{tab.title}
+    div.tab-content
+      each tab, index in tabs
+        div.tab-pane(class=(index === 0 ? 'active' : ''), id=tab.id)
+          if tab.id === 'tab1'
+            include ../pages/dashboard/user/about.pug
+          else if tab.id === 'tab2'
+            include ../pages/dashboard/user/resume.pug
+          else if tab.id === 'tab3'
+            include ../pages/dashboard/user/my-jobs.pug
+
+block styles
+  link(rel='stylesheet', href='/css/tab.css')

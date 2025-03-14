@@ -1,6 +1,17 @@
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+  background-color: rgb(247, 246, 246);
+}
+
+.main-content {
+  margin-left: 20%;
+  width: 80%;
+}
+
 .title {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #4a29a5;
-    margin-bottom: 20px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #4a29a5;
+  margin-bottom: 20px;
 }

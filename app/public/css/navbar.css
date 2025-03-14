@@ -1,4 +1,10 @@
 .navbar {
+<<<<<<< HEAD
+=======
+  color: #1e2b3b;
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+>>>>>>> 4de4df22f84ac9142e83e88f4acb5ece10e9c707
   width: 100%;
   padding: 20px 20px;
   /* position: fixed; */
@@ -31,6 +37,10 @@
 }
 
 .link {
+<<<<<<< HEAD
+=======
+  color: #1e2b3b;
+>>>>>>> 4de4df22f84ac9142e83e88f4acb5ece10e9c707
   font-size: 14px;
   text-decoration: none;
 }
