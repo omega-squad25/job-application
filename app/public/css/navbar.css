@@ -1,23 +1,69 @@
 .navbar {
+<<<<<<< HEAD
+=======
   color: #1e2b3b;
   background-color: #fff;
   border: 1px solid #e2e8f0;
+>>>>>>> 4de4df22f84ac9142e83e88f4acb5ece10e9c707
   width: 100%;
-  padding: 10px 0;
-  position: fixed;
+  padding: 20px 20px;
+  /* position: fixed; */
   top: 0;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #e5eae8;
+  background-color: transparent;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-.ul {
-  max-width: 1280px;
-  margin: 15px auto;
-  width: 90%;
+
+.logo {
+  height: 40px;
+  margin-left: 20px;
+}
+
+.navbar-menu {
   display: flex;
   align-items: center;
   gap: 20px;
+  margin-right: 20px;
+}
+
+.navbar-menu li.divider {
+  margin: 0 5px;
+  color: #e5eae8;
+  cursor: none;
 }
 
 .link {
+<<<<<<< HEAD
+=======
   color: #1e2b3b;
+>>>>>>> 4de4df22f84ac9142e83e88f4acb5ece10e9c707
   font-size: 14px;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: none !important;
+}
+
+.signup-btn {
+  background-color: #007aff !important;
+  color: white !important;
+  padding: 8px 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.signup-btn img {
+  height: 16px;
 }

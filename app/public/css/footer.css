@@ -1,17 +1,102 @@
 .footer {
-  background-color: #333;
-  color: white;
   width: 100%;
-  padding: 20px;
+  padding: 20px 50px;
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  border-top: 2px solid #e5eae8;
+  border-bottom: 2px solid #e5eae8;
 }
 
-.contents {
-  max-width: 1280px;
-  margin: 15px auto;
-  width: 90%;
+#countryDropdown {
+  padding: 10px 30px 10px 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  margin-top: -50px;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
 }
 
-.text {
-  color: green;
-  font-size: 20px;
+.flag-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-menus {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin-top: 20px;
+}
+
+.menu {
+  text-align: left;
+}
+
+.menu h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  
+}
+
+.menu ul li {
+  margin: 15px 0;
+  
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.footer-social {
+  width: 100%;
+  padding: 20px 50px;
+  display: flex;
+  align-items: center; 
+  gap: 40%;
+  text-align: center;
+  margin-top: 10% 10%;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px; 
+  margin-bottom: 10px;
+}
+
+.social-links a img {
+  width: 30px;
+  height: 30px;
+  transition: transform 0.3s ease;
+}
+
+.social-links a:hover img {
+  transform: scale(1.1); 
+}
+
+.footer-social p {
+  font-size: 14px;
+  color: #007aff;
+  margin-top: 10px;
 }
