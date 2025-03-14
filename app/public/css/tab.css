@@ -1,5 +1,6 @@
 .tab-container {
-  margin-top: 20px;
+  margin-top: 15px;
+  padding: 20px;
 }
 
 .tab-list {
@@ -10,24 +11,17 @@
 }
 
 .tab-item {
-  padding: 10px 20px;
+  margin-right: 20px;
   cursor: pointer;
   border: 1px solid transparent;
   border-bottom: none;
-  margin-right: 5px;
+  margin-right: 35px;
 }
 
 .tab-item.active {
-  border-color: #e2e8f0;
-  border-bottom: 1px solid white;
-  background-color: white;
-}
-
-.tab-content {
-  border: 1px solid #e2e8f0;
-  border-top: none;
-  padding: 20px;
-  border-radius: 0 0 10px 10px;
+  border-bottom-color: #007aff;
+  border-bottom: 2.5px solid #007aff;
+  color: #007aff;
 }
 
 .tab-pane {

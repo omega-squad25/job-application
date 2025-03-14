@@ -3,7 +3,7 @@ mixin tabComponent(tabs)
     ul.tab-list
       each tab, index in tabs
         li.tab-item(class=(index === 0 ? 'active' : ''), data-tab=tab.id) #{tab.title}
-    div.tab-content
+    div
       each tab, index in tabs
         div.tab-pane(class=(index === 0 ? 'active' : ''), id=tab.id)
           if tab.id === 'tab1'
