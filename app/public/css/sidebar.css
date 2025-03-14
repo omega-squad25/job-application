@@ -27,10 +27,11 @@
   display: block;
   transition: 0.3s;
   padding: 15px;
-  font-weight: 500px;
+  font-weight: 500;
 }
 
-.sidebar-menu li a:hover {
+.sidebar-menu li a:hover,
+.sidebar-menu li a.active {
   background-color: #007aff;
   color: #fff;
   border-radius: 10px;

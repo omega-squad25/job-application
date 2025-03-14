@@ -1,9 +1,9 @@
-
 .contents {
   margin: 100px 20px;
   border: 1px solid #e2e8f0;
   padding: 30px;
-  border-radius: 10px;}
+  border-radius: 10px;
+}
 
 .personal-info {
   padding: 20px;
@@ -34,16 +34,18 @@
 }
 
 .camera-icon i {
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .name {
-   font-size: 22px;
+  font-size: 22px;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
 .text {
- font-size: 15px;
+  font-size: 15px;
   color: #606261;
+  padding-bottom: 5px;
+  font-weight: 300;
 }

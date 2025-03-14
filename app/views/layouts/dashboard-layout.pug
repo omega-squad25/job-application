@@ -9,13 +9,12 @@ html
     link(rel='stylesheet', href='/css/dashboard.css')
     block styles
   body 
+    // Include the navbar component
+    include ../components/navbar
+    
     div.dashboard-layout
-      // Include the navbar component
-      include ../components/navbar
-      
       // Include the sidebar component
       include ../components/sidebar
-      
       div.main-content
         block content
     block scripts

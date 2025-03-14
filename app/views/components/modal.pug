@@ -1,0 +1,12 @@
+div.modal-overlay.hidden
+  div.modal
+    div.modal-header
+      h2.modal-title #{title}
+      span.modal-close &times;
+    div.modal-body
+      block content
+    div.modal-footer
+      button.modal-close-btn Close
+
+block styles
+  link(rel='stylesheet', href='/css/modal.css')
