@@ -1,10 +1,7 @@
 .navbar {
-<<<<<<< HEAD
-=======
   color: #1e2b3b;
   background-color: #fff;
   border: 1px solid #e2e8f0;
->>>>>>> 4de4df22f84ac9142e83e88f4acb5ece10e9c707
   width: 100%;
   padding: 20px 20px;
   /* position: fixed; */
@@ -37,10 +34,7 @@
 }
 
 .link {
-<<<<<<< HEAD
-=======
   color: #1e2b3b;
->>>>>>> 4de4df22f84ac9142e83e88f4acb5ece10e9c707
   font-size: 14px;
   text-decoration: none;
 }
@@ -52,16 +46,16 @@
 .signup-btn {
   background-color: #007aff !important;
   color: white !important;
-  padding: 8px 15px;
-  border-radius: 10px;
+  padding: 12px 20px;
+  border-radius: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   gap: 5px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
 }
 
 .signup-btn img {
