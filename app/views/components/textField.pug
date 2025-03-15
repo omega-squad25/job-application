@@ -1,0 +1,12 @@
+mixin textField(id, label, type = 'text', variant = 'outlined')
+  .text-field-container
+    input(
+      id=id 
+      placeholder=label 
+      class=`mui-textfield ${variant}` 
+      type=type
+      required
+    )
+    if type === 'password'
+      span.eye-icon(onclick='togglePasswordVisibility()')
+        img(src='/assets/images/eye-icon.svg' alt='Toggle Password Visibility')
