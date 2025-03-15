@@ -1,24 +1,22 @@
-body,
-html {
+body, html {
   height: 100%;
   margin: 0;
-  overflow: hidden;
+  overflow: hidden; /* Prevent scrolling */
 }
 
-.login-container {
+.signUp-container {
   display: flex;
   height: 100vh;
 }
 
-.login-left,
-.login-right {
+.signUp-left, .signUp-right {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.login-left {
+.signUp-left {
   background-color: #f8f8f8;
 }
 
@@ -27,26 +25,27 @@ html {
   height: auto;
 }
 
-.login-right {
+.signUp-right {
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.login-right .logo {
+
+.signUp-right .logo {
   margin-bottom: 20px;
 }
 
-.login-form {
+.signUp-form {
   width: 100%;
   max-width: 500px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .text-field-container {
   margin-bottom: 20px;
-  position: relative;
+  position: relative; /* This ensures the eye icon is correctly positioned */
 }
 
 .mui-textfield {
@@ -57,6 +56,22 @@ html {
   border-radius: 5px;
 }
 
+.mui-textfield:focus {
+  border-color: #007aff; /* Highlight input on focus */
+  outline: none;
+}
+
+.mui-textfield.error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: left;
+}
+
 .eye-icon {
   position: absolute;
   right: 10px;
@@ -65,7 +80,7 @@ html {
   cursor: pointer;
 }
 
-.login-btn {
+.signUp-btn {
   width: 100%;
   padding: 15px;
   font-size: 16px;
@@ -78,32 +93,21 @@ html {
   border: none;
   cursor: pointer;
   margin-top: 30px;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  -o-border-radius: 20px;
 }
 
-.login-btn:hover {
+.signUp-btn:hover {
   background-color: #005bb5;
 }
 
-.forgot-password {
-  display: block;
-  text-align: right;
-  color: #007aff;
-  text-decoration: none;
-}
-
-.forgot-password:hover {
-  text-decoration: underline;
-}
-
-.dont-have-account {
+.already-have-account {
   margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
-.signup-link {
+.login-link {
   color: #007aff;
+  margin-left: 5px;
 }

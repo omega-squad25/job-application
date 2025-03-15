@@ -1,27 +1,36 @@
 block content
-  h1.title Login
-  p This is the login page
+  // Include the textField component
+  include ../components/textField
 
+  .login-container
+    .login-left
+      img(src='/assets/images/LoginImg.png' alt='Login Image' class='login-img')
 
+    .login-right
+      div.logo
+        a.logo-link(href='/')
+          img(src='/assets/images/logo.svg' alt='Logo' class='logo')
+      h2 Login to your account
 
-  //- form(action='/dashboard/user' method='POST')
-  //-   div.input-group
-  //-     label(for='email') Email
-  //-     input(type='email' name='email' id='email' placeholder='Enter your email' required)
-  //-   div.input-group
-  //-     label(for='password') Password
-  //-     input(type='password' name='password' id='password' placeholder='Enter your password' required)
-  //-   div.input-group
-  //-     input(type='checkbox' name='remember' id='remember')
-  //-     label(for='remember') Remember me
-  //-   button(type='submit' class='login-btn') Login
+      form.login-form(action='/dashboard/user')
+        .form-group
+          +textField('email', 'Enter your email', 'email', 'outlined')
+        
+        .form-group 
+          +textField('password', 'Enter your password', 'password', 'outlined')
 
-    
-  form(action='/dashboard/user' method='GET')
-    button(type='submit' class='login-btn') Login
+        .form-group 
+          a.forgot-password(href='') Forgot Password?
+        button.login-btn(type='submit') Login
 
-block scripts
-  script(src='/js/login.js')
+      p.dont-have-account
+        span Don't have an account?
+        a.signup-link(href='/signUp')  Sign Up
 
 block styles
   link(rel='stylesheet', href='/css/login.css')
+  link(rel='stylesheet', href='/css/global-styles.css')
+
+block scripts
+  script(src='https://cdn.jsdelivr.net/npm/yup@0.32.9/dist/yup.min.js')
+  script(src='/js/login.js')

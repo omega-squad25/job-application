@@ -1,0 +1,40 @@
+block content
+  // Include the textField component
+  include ../components/textField
+
+  .signUp-container
+    .signUp-left
+      img(src='/assets/images/LoginImg.png' alt='Login Image' class='login-img')
+
+    .signUp-right
+      div.logo
+        a.logo-link(href='/')
+          img(src='/assets/images/logo.svg' alt='Logo' class='logo')
+      h2 Create your Account
+
+      form.signUp-form(action='/dashboard/user')
+        .form-group 
+          +textField('fullname', 'Full Name', 'text', 'outlined')
+
+        .form-group
+          +textField('email', 'Email', 'email', 'outlined')
+        
+        .form-group 
+          +textField('password', 'Password', 'password', 'outlined')
+
+        .form-group 
+          +textField('cpassword', 'Confirm Password', 'password', 'outlined')
+
+        button.signUp-btn(type='submit') Sign Up
+
+        p.already-have-account
+          span Already have an account?
+          a.login-link(href='/login') Login
+
+block styles
+  link(rel='stylesheet', href='/css/signup.css')
+  link(rel='stylesheet', href='/css/global-styles.css')
+
+block scripts
+  script(src='https://cdn.jsdelivr.net/npm/yup@0.32.9/dist/yup.min.js')
+  script(src='/js/signup.js')

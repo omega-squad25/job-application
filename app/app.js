@@ -63,8 +63,8 @@ app.get("/login", function (req, res) {
 });
 
 // Create a route for the register page
-app.get("/register", function (req, res) {
-  res.render("pages/register", { title: "GoHire Registration page" });
+app.get("/signUp", function (req, res) {
+  res.render("pages/signUp", { title: "GoHire Registration page" });
 });
 
 // Create a dynamic route for /hello/<name>, where name is any value provided by user

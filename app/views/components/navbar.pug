@@ -1,6 +1,6 @@
-mixin navbar(bgColor = '#FAFAFA')
+mixin navbar(bgColor = '#FAFAFA', maxWidth = '1280px', width='90%', padding='0px 0px' )
   nav.navbar-container(style=`background-color: ${bgColor}`)
-    div.navbar-contents
+    div.navbar-contents(style=`max-width: ${maxWidth}; width: ${width}; padding: ${padding}`)
       a.logo-link(href='/')
         img.logo-img(src='/assets/images/logo.svg' alt='Logo' class='logo')
       ul.navbar-menu
