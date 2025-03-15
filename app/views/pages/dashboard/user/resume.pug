@@ -1,8 +1,17 @@
 block content
- 
-  div.contents
-    h1.title resume
-    p This is the my resume page content.
+  div.resume-contents
+    div.title-wrapper
+      h1.resume-title Resume
+      p.resume-text Upload your resume
+
+    div.upload-wrapper
+      label.upload-label(for='resume-upload')
+        i.fas.fa-plus.resume-icon
+        span.upload-text Upload resume
+      input#resume-upload(type='file', accept='.pdf,.doc,.docx', style='display: none;')
+      span.file-wrapper
+        i.fa-solid.fa-file.resume-file
+        p.file-name No file chosen
 
 block scripts
   script(src='/js/resume.js')

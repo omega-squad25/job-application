@@ -43,6 +43,11 @@
   text-decoration: none !important;
 }
 
+.logo-img {
+  max-width: 100%;
+  width: 140px;
+}
+
 .signup-btn {
   background-color: #007aff !important;
   color: white !important;

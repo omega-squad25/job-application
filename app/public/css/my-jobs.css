@@ -1,0 +1,46 @@
+.job-contents {
+  padding: 30px 0;
+}
+
+.job-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.job-text {
+  font-size: 16px;
+}
+
+.title-wrapper {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 15px;
+}
+
+.empty-job-state {
+  background-color: #f8fcff;
+  border-radius: 15px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.link-wrapper {
+    margin-top: 40px;
+}
+
+.job-link {
+  background-color: #007aff;
+  color: white;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+}

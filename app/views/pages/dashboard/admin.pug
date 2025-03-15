@@ -3,6 +3,9 @@ extends ../../layouts/dashboard-layout
 block content
   - var currentPage = 'admin'
 
+    // Include the sidebar component and pass the currentPage variable
+  include ../../components/sidebar
+
   div.contents
     h1.title Admin Dashboard
     p This is the admin dashboard page content.

@@ -1,3 +1,4 @@
+// Existing tabComponent mixin
 mixin tabComponent(tabs)
   div.tab-container
     ul.tab-list
@@ -11,7 +12,7 @@ mixin tabComponent(tabs)
           else if tab.id === 'tab2'
             include ../pages/dashboard/user/resume.pug
           else if tab.id === 'tab3'
-            include ../pages/dashboard/user/my-jobs.pug
+            include ../pages/dashboard/user/my-jobs/index.pug
 
 block styles
   link(rel='stylesheet', href='/css/tab.css')

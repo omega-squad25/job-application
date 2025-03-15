@@ -1,16 +1,16 @@
-nav.navbar-container
-  div.navbar-contents
-    a.logo-link(href='/')
-      img(src='/assets/images/logo.png' alt='Logo' class='logo')
-    ul.navbar-menu
-      li: a.link(href='/jobs') Jobs
-      li.divider | 
-      li: a.link(href='/login') Login
-      li.signup
-        a.link.signup-btn(href='/signup')
-          img(src='/assets/images/login-icon.svg' alt='Login Icon')
-          span SignUp
-
+mixin navbar(bgColor = '#FAFAFA')
+  nav.navbar-container(style=`background-color: ${bgColor}`)
+    div.navbar-contents
+      a.logo-link(href='/')
+        img.logo-img(src='/assets/images/logo.svg' alt='Logo' class='logo')
+      ul.navbar-menu
+        li: a.link(href='/jobs') Jobs
+        li.divider | 
+        li: a.link(href='/login') Login
+        li.signup
+          a.link.signup-btn(href='/signup')
+            img(src='/assets/images/login-icon.svg' alt='Login Icon')
+            span SignUp
 
 block styles
   link(rel='stylesheet', href='/css/navbar.css')
