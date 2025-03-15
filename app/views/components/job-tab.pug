@@ -1,0 +1,16 @@
+// New tabJobsComponent mixin
+mixin tabJobsComponent(tabs)
+  div.job-tab-container
+    ul.job-tab-list
+      each tab, index in tabs
+        li.job-tab-item(class=(index === 0 ? 'active' : ''), data-job-tab=tab.id) #{tab.title}
+    div
+      each tab, index in tabs
+        div.job-tab-pane(class=(index === 0 ? 'active' : ''), id=tab.id)
+          if tab.id === 'tabjob1'
+            include ../pages/dashboard/user/my-jobs/saved.pug
+          else if tab.id === 'tabjob2'
+            include ../pages/dashboard/user/my-jobs/applied.pug
+
+block styles
+  link(rel='stylesheet', href='/css/job-tab.css')

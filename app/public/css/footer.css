@@ -1,13 +1,19 @@
 .footer {
   width: 100%;
-  padding: 20px 50px;
+  padding: 20px 0;
   background-color: #f8f8f8;
+  border-top: 1px solid #e5eae8;
+  border-bottom: 1px solid #e5eae8;
+}
+
+.footer-contents {
   display: flex;
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  border-top: 2px solid #e5eae8;
-  border-bottom: 2px solid #e5eae8;
+  max-width: 1280px;
+  width: 90%;
+  margin: 0 auto;
 }
 
 #countryDropdown {
@@ -34,7 +40,7 @@
 .footer-menus {
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  width: 75%;
   margin-top: 20px;
 }
 
@@ -51,12 +57,10 @@
 .menu ul {
   list-style: none;
   padding: 0;
-  
 }
 
 .menu ul li {
   margin: 15px 0;
-  
 }
 
 .link {
@@ -70,18 +74,21 @@
 }
 
 .footer-social {
-  width: 100%;
-  padding: 20px 50px;
+  padding: 20px 0;
   display: flex;
-  align-items: center; 
-  gap: 40%;
+  align-items: center;
+  gap: 30%;
   text-align: center;
   margin-top: 10% 10%;
+  border-top: 1px solid #e5eae8;
+  max-width: 1280px;
+  width: 90%;
+  margin: 0 auto;
 }
 
 .social-links {
   display: flex;
-  gap: 15px; 
+  gap: 15px;
   margin-bottom: 10px;
 }
 
@@ -92,11 +99,11 @@
 }
 
 .social-links a:hover img {
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }
 
 .footer-social p {
-  font-size: 14px;
+  font-size: 15px;
   color: #007aff;
   margin-top: 10px;
 }

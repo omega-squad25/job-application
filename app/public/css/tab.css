@@ -11,7 +11,6 @@
 }
 
 .tab-item {
-  margin-right: 20px;
   cursor: pointer;
   border: 1px solid transparent;
   border-bottom: none;
@@ -29,5 +28,42 @@
 }
 
 .tab-pane.active {
+  display: block;
+}
+
+.job-tab-container {
+  margin: 30px 0;
+}
+
+.job-tab-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 20px;
+}
+
+.job-tab-item {
+  margin-right: 20px;
+  cursor: pointer;
+  border-bottom: none;
+  margin-right: 20px;
+  padding: 5px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  font-size: 15px;
+}
+
+.job-tab-item.active {
+  background-color: #007aff;
+  color: #fff;
+  border: 1px solid #007aff;
+}
+
+.job-tab-pane {
+  display: none;
+}
+
+.job-tab-pane.active {
   display: block;
 }
