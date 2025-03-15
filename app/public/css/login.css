@@ -1,6 +1,107 @@
-.title {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #a5296d;
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; 
+  }
+  
+  .login-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .login-left, .login-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-left {
+    background-color: #f8f8f8;
+  }
+  
+  .login-img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .login-right {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .login-right .logo {
+    margin-bottom: 20px; 
+  }
+  
+  .login-form {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 30px;
+  }
+
+  .text-field-container {
     margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .mui-textfield {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  .login-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    color: white;
+    background-color: #007aff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    margin-top: 30px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
 }
+  
+  .login-btn:hover {
+    background-color: #005bb5;
+  }
+  
+  .forgot-password {
+    display: block;
+    text-align: right;
+    color: #007aff;
+    text-decoration: none;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+
+  .dont-have-account {
+    margin-top: 25px;
+    text-align: center;
+  }
+
+  .signup-link {
+    color: #007aff;
+  }
