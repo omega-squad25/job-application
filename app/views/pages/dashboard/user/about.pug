@@ -45,9 +45,64 @@ block content
           h2.modal-title Work Experience
           span.modal-close &times;
         div.modal-body
-          p This is the content inside the work experience modal.
+          form
+            div.form-group
+              label(for='job-title') Job Title
+              input#job-title(type='text', name='job-title', placeholder='Data Analyst', required)
+            div.form-group
+              label(for='company') Company Name
+              input#company(type='text', name='company', placeholder='Google', required)
+            div.checkbox
+              input#current-job(type='checkbox', name='current-job')
+              label(for='current-job') I'm currently working here
+            div.form-group
+              label(for='start-date') Start Date
+              div.date-fields
+                select#start-month(name='start-month', required)
+                  option(value='') Month
+                  option(value='1') January
+                  option(value='2') February
+                  option(value='3') March
+                  option(value='4') April
+                  option(value='5') May
+                  option(value='6') June
+                  option(value='7') July
+                  option(value='8') August
+                  option(value='9') September
+                  option(value='10') October
+                  option(value='11') November
+                  option(value='12') December
+                select#start-year(name='start-year', required)
+                  option(value='') Year
+                  - for (var i = new Date().getFullYear(); i >= 1980; i--)
+                    option(value=i) #{i}
+            div.form-group
+              label(for='end-date') End Date
+              div.date-fields
+                select#end-month(name='end-month')
+                  option(value='') Month
+                  option(value='1') January
+                  option(value='2') February
+                  option(value='3') March
+                  option(value='4') April
+                  option(value='5') May
+                  option(value='6') June
+                  option(value='7') July
+                  option(value='8') August
+                  option(value='9') September
+                  option(value='10') October
+                  option(value='11') November
+                  option(value='12') December
+                select#end-year(name='end-year')
+                  option(value='') Year
+                  - for (var i = new Date().getFullYear(); i >= 1980; i--)
+                    option(value=i) #{i}
+            div.form-group
+              label(for='responsibility') Responsibility
+              textarea#responsibility(name='responsibility', placeholder='Describe your responsibilities', required)
         div.modal-footer
-          button.modal-close-btn Close
+          button.modal-close-btn Cancel
+          button.modal-save-btn Save
 
     // Include the modal component for education
     div#modal-education.modal-overlay.hidden
@@ -56,9 +111,61 @@ block content
           h2.modal-title Education
           span.modal-close &times;
         div.modal-body
-          p This is the content inside the education modal.
+          form
+            div.form-group
+              label(for='institution') Name of Institution
+              input#institution(type='text', name='institution', placeholder='University of Roehampton', required)
+            div.form-group
+              label(for='course') Field of Study
+              input#course(type='text', name='course', placeholder='Computer Science', required)
+            div.form-group
+              label(for='degree') Degree
+              input#degree(type='text', name='degree', placeholder='BSc.', required)
+            div.form-group
+              label(for='start-date') Start Date
+              div.date-fields
+                select#start-month(name='start-month', required)
+                  option(value='') Month
+                  option(value='1') January
+                  option(value='2') February
+                  option(value='3') March
+                  option(value='4') April
+                  option(value='5') May
+                  option(value='6') June
+                  option(value='7') July
+                  option(value='8') August
+                  option(value='9') September
+                  option(value='10') October
+                  option(value='11') November
+                  option(value='12') December
+                select#start-year(name='start-year', required)
+                  option(value='') Year
+                  - for (var i = new Date().getFullYear(); i >= 2000; i--)
+                    option(value=i) #{i}
+            div.form-group
+              label(for='end-date') End Date
+              div.date-fields
+                select#end-month(name='end-month')
+                  option(value='') Month
+                  option(value='1') January
+                  option(value='2') February
+                  option(value='3') March
+                  option(value='4') April
+                  option(value='5') May
+                  option(value='6') June
+                  option(value='7') July
+                  option(value='8') August
+                  option(value='9') September
+                  option(value='10') October
+                  option(value='11') November
+                  option(value='12') December
+                select#end-year(name='end-year')
+                  option(value='') Year
+                  - for (var i = new Date().getFullYear(); i >= 2000; i--)
+                    option(value=i) #{i}
         div.modal-footer
-          button.modal-close-btn Close
+          button.modal-close-btn Cancel
+          button.modal-save-btn Save      
 
 block scripts
   script(src='/js/about.js')
