@@ -21,6 +21,17 @@ block content
             i.fa-solid.fa-plus
             p Create Job
 
+      // Include the table component and pass the title, headers, and rows
+      include ../../components/table
+      +table(['Job Title', 'Company', 'Date Posted', 'Location', 'Status', 'Action' ], [
+        ['Data Analyst', 'Google', '12/10/23', 'London, UK', 'Approved', 'action'],
+        ['Software Engineer', 'Facebook', '12/10/23', 'New York, USA', 'Pending', 'action'],
+        ['Product Manager', 'Amazon', '12/10/23', 'Seattle, USA', 'Approved', 'action'],
+        ['Product Manager', 'Amazon', '12/10/23', 'Seattle, USA', 'Approved', 'action'],
+        ['Product Manager', 'Amazon', '12/10/23', 'Seattle, USA', 'Approved', 'action'],
+        ['Product Manager', 'Amazon', '12/10/23', 'Seattle, USA', 'Approved', 'action'],
+      ])
+
     // Include the modal component for create job
     div#modal-create-job.modal-overlay.hidden
       div.modal
