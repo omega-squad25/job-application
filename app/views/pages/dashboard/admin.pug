@@ -3,7 +3,7 @@ extends ../../layouts/dashboard-layout
 block content
   - var currentPage = 'admin'
 
-    // Include the sidebar component and pass the currentPage variable
+  // Include the sidebar component and pass the currentPage variable
   include ../../components/sidebar
 
   div.contents
@@ -16,13 +16,42 @@ block content
     div.table-container 
       div.table-header  
         p.table-title Jobs 
-        div.create-job.modal-trigger(data-target='#modal-skills', style='cursor: pointer;')
-          button.btn.modal-trigger(data-target='#modal-skills', style='cursor: pointer;')
+        div.create-job.modal-trigger(data-target='#modal-create-job', style='cursor: pointer;')
+          button.btn.modal-trigger(data-target='#modal-create-job', style='cursor: pointer;')
             i.fa-solid.fa-plus
             p Create Job
 
+    // Include the modal component for create job
+    div#modal-create-job.modal-overlay.hidden
+      div.modal
+        div.modal-header
+          h2.modal-title Create Job
+          span.modal-close &times;
+        div.modal-body
+          form
+            div.form-group
+              label(for='job-title') Job Title
+              input#job-title(type='text', name='job-title', placeholder='Data Analyst', required)
+            div.form-group
+              label(for='company-name') Company Name
+              input#company-name(type='text', name='company-name', placeholder='Google', required)
+            div.form-group
+              label(for='job-type') Job Type
+              input#job-type(type='text', name='job-type', placeholder='Remote', required)
+            div.form-group
+              label(for='location') Location
+              input#location(type='text', name='location', placeholder='London, UK', required)
+            div.form-group
+              label(for='job-description') Job Description
+              textarea#job-description(name='job-description', placeholder='Job Description', required)
+        div.modal-footer
+          button.modal-close-btn Cancel
+          button.modal-save-btn Save
+
 block scripts
   script(src='/js/admin.js')
+  script(src='/js/modal.js')
 
 block styles
   link(rel='stylesheet', href='/css/admin.css')
+  link(rel='stylesheet', href='/css/modal.css')
