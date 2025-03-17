@@ -7,8 +7,19 @@ block content
   include ../../components/sidebar
 
   div.contents
-    h1.title Admin Dashboard
-    p This is the admin dashboard page content.
+    div.card-container
+      // Include the card component and pass props
+      include ../../components/admin-card
+      +adminCard('/assets/images/admin-card3.svg', 'Total Number of Jobs', '15')
+      +adminCard('/assets/images/admin-card2.svg', 'Total Approved Jobs', '10')
+      +adminCard('/assets/images/admin-card1.svg', 'Total Pending Jobs', '5')
+    div.table-container 
+      div.table-header  
+        p.table-title Jobs 
+        div.create-job.modal-trigger(data-target='#modal-skills', style='cursor: pointer;')
+          button.btn.modal-trigger(data-target='#modal-skills', style='cursor: pointer;')
+            i.fa-solid.fa-plus
+            p Create Job
 
 block scripts
   script(src='/js/admin.js')
