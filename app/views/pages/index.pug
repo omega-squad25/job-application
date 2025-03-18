@@ -1,13 +1,128 @@
 extends ../layouts/main-layout
 
 block content
+  include ../components/navbar
+
+
 
   div.container
-    h1.title Home
-    p This is the updated Home page
+    div.top-section
+      div.content
+        h1.title 
+          | Job Hunting 
+          br
+          | Made 
+          span Simple 
+        p 
+          | Discover fresh job postings tailored just for you. 
+          br
+          | Browse opportunities that match your skills and 
+          br 
+          | apply effortlessly.
+        a.get-started(href="/jobs")  Explore Jobs
+
+        div.data-container
+          img(src="/assets/images/data.png", alt="data", class="data-img")
+          div.active-users
+            div.active
+              h3 Active Users 
+              img(src="/assets/images/line.png", alt="line" class="line")
+            p 
+              |We have over 300k active and
+              br
+              | satisfied users all over the world
+
+      div.img-container
+        img(src="/assets/images/woman.png", alt="woman with laptop on glasses", class="woman-img")
+
+    div.brands-section 
+      h2.title
+        | Work with Exciting 
+        span Companies
+        |  In The World
+      div.brands
+        img(src="/assets/images/brands.png", alt="brands", class="brand")
+       
+    div.features-section
+      h2.title Choose Categories
+      div.features
+        div.feature
+          img(src="/assets/images/marketing.png", alt="marketing", class="feature-img")
+          div 
+            h3.title Marketing & Communication
+            p.description 58 Jobs Available
+
+        div.feature
+          img(src="/assets/images/UiUx.png", alt="UI/UX", class="feature-img")
+          div
+            h3.title UI/UX 
+              br 
+              | Design
+            p.description 120 Jobs Available
+
+        div.feature
+          img(src="/assets/images/finace.png", alt="Finance Management", class="feature-img")
+          div
+            h3.title Finance Management
+            p.description 230 Jobs Available
+
+        div.feature
+          img(src="/assets/images/web.png", alt="Web development", class="feature-img")
+          div
+            h3.title Web Development
+            p.description 100 Jobs Available
+
+        div.feature
+          img(src="/assets/images/project.png", alt="Project Management", class="feature-img")
+          div
+            h3.title Project Management
+            p.description 87 Jobs Available
+
+        div.feature
+          img(src="/assets/images/business.png", alt="Business & Consulting", class="feature-img")
+          div
+            h3.title Finance Management
+            p.description 23 Jobs Available
+        div.feature
+          img(src="/assets/images/bxs_palette.png", alt="Graphics Design", class="feature-img")
+          div
+            h3.title Business & Consulting
+            p.description 65 Jobs Available
+        div.feature
+          img(src="/assets/images/video.png", alt="Video Editor", class="feature-img")
+          div 
+            h3.title Video 
+              br
+              | Editor
+            p.description 120 Jobs Available
+
+    div.account-section
+      img(src="/assets/images/Image.png", alt="Woman sitting with a laptop", class="account-img")
+      div.account
+        p.account-title Create your Profile
+        p.header
+          | Build your Personal
+          br
+          | Account Profile
+        p.description 
+          | Create a free account to receive job alerts, personalize 
+          br
+          | your job search, and apply directly to companies with
+          br
+          | ease. Stay updated and take the next step in your
+          br
+          | career today.
+        a.get-started(href="/signUp") Create an Account
+
+        
+        
+
+
+  // Include the footer component
+  include ../components/footer
 
 block scripts
-  script(src='/js/home-page.js')
+  script(src='/js/index.js')
 
 block styles
-  link(rel='stylesheet', href='/css/home-page.css')
+  link(rel='stylesheet', href='/css/index.css')
