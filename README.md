@@ -56,3 +56,185 @@ Once in the database container, you can get a MySQL CLI in the usual way
 ```bash
 mysql -uroot -p<password> 
 ```
+
+
+<!-- ABOUT THE PROJECT -->
+
+# A Backend API for GoHire
+
+### AUTHENTICATION
+
+### Register/Sign up as a user
+
+- Route: /api/auth/register
+- method: POST
+
+- 👇: Body
+
+```json
+{
+ "fullName": "Peter Pan",
+ "email": "peter@example.com",
+ "password": "fakeUser@1",
+ "confirmPassword": "fakeUser@1"
+}
+```
+
+👇: Response
+
+```json
+{
+ "message": "User registered successfully",
+ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQwZDdhZWU2LTY4OTEtNDk5YS04MmM0LTgyODQ3YTcxMzgxYyIsImVtYWlsIjoicGV0ZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MjIzNzQ5NiwiZXhwIjoxNzQyMzIzODk2fQ.izcnSTbHw_7-0I9RjKuBwUIFcC3e0oob5MLRYwGOgGY",
+ "user": {
+  "id": "d0d7aee6-6891-499a-82c4-82847a71381c",
+  "email": "peter@example.com",
+  "role": "user",
+  "isAdmin": false,
+  "profile": {
+   "id": "b9594b17-6507-4a4a-8533-76b86425bc59",
+   "userId": "d0d7aee6-6891-499a-82c4-82847a71381c"
+  }
+ }
+}
+```
+
+#### Login a user
+
+Route:/api/auth/login
+method: POST
+
+👇: Body
+
+```json
+{
+ "email": "peter@example.com",
+ "password": "fakeUser@1"
+}
+```
+
+👇: Response
+
+```json
+{
+ "message": "Login successful",
+ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQwZDdhZWU2LTY4OTEtNDk5YS04MmM0LTgyODQ3YTcxMzgxYyIsImVtYWlsIjoicGV0ZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MjIzNzY2MiwiZXhwIjoxNzQyMzI0MDYyfQ.agRKZSnduqy_lWjLvaY4IiM76GGd9jT6cjV0kg5xILo",
+ "user": {
+  "id": "d0d7aee6-6891-499a-82c4-82847a71381c",
+  "email": "peter@example.com",
+  "isAdmin": false
+ }
+}
+```
+
+#### Login as Admin
+
+Route:/api/auth/login
+method: POST
+
+👇: Body
+
+```json
+{
+ "email": "user@admin.com",
+ "password": "Admin1@admin"
+}
+```
+
+👇: Response
+
+```json
+{
+ "message": "Login successful",
+ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg1NmZjN2I2LTZkMTctNDJkNC1hOWI4LWRiYzU4YjVhNDc2NCIsImVtYWlsIjoidXNlckBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDIyMzc5MDgsImV4cCI6MTc0MjMyNDMwOH0.wbzIXpe0YnThl6BJ7oGM-MGog0QzRd1lOm-aVObdvDY",
+ "user": {
+  "id": "856fc7b6-6d17-42d4-a9b8-dbc58b5a4764",
+  "email": "user@admin.com",
+  "isAdmin": true
+ }
+}
+```
+
+---
+
+### JOB
+
+#### Create job as an admin
+
+- Route: api/jobs
+- Method: POST
+- Header
+- Authorization: Bearer {token}
+
+👇: Body
+
+```json
+{
+ "title": "Technical Support",
+ "description": "System admin",
+ "company": "Fednet Ltd",
+ "location": "New York"
+}
+```
+
+👇: Response
+
+```json
+{
+ "message": "Job created successfully",
+ "job": {
+  "id": "7c4adb4d-367d-4617-a510-4ec1e76984f8",
+  "title": "Technical Support"
+ }
+}
+```
+
+#### Get all jobs (public)
+
+- Route: /api/jobs
+- Method: GET
+
+```json
+{
+ "message": "Jobs retrieved successfully",
+ "data": {
+  "jobs": [
+   {
+    "id": "7c4adb4d-367d-4617-a510-4ec1e76984f8",
+    "title": "Technical Support",
+    "description": "System admin",
+    "location": "New York",
+    "company": "Fednet Ltd",
+    "createdAt": "2025-03-17T19:02:34.000Z"
+   }
+  ],
+  "pagination": {
+   "total": 1,
+   "page": 1,
+   "limit": 10,
+   "totalPages": 1
+  }
+ }
+}
+```
+
+#### Get Jobs by Id
+
+- Route: /api/jobs/:id
+- Method: GET
+
+👇: Response
+
+```json
+{
+ "message": "Job retrieved successfully",
+ "data": {
+  "id": "7c4adb4d-367d-4617-a510-4ec1e76984f8",
+  "title": "Technical Support",
+  "description": "System admin",
+  "location": "New York",
+  "company": "Fednet Ltd",
+  "createdAt": "2025-03-17T19:02:34.000Z"
+ }
+}
+```
