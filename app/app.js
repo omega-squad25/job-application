@@ -1,38 +1,39 @@
 // Import express.js
-const express = require("express");
+import express from "express";
+import authRoutes from "./routes/auth.js";
+import jobRoutes from "./routes/jobs.js";
+// import db from "./services/db.js";
+// Import the db module
 
 // Create express app
 var app = express();
 
 // Add static files location
 app.use(express.static("app/public"));
+app.use(express.json());
+
+
+// Add cache control headers
+app.use((req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
+//add API routes
+app.use("/api/auth", authRoutes);
+app.use("/api/jobs", jobRoutes);
 
 // Use the Pug templating engine
 app.set("view engine", "pug");
 app.set("views", "./app/views");
 
-// Get the functions in the db.js file to use
-const db = require("./services/db");
+// // Get the functions in the db.js file to use
+// const db = require("./services/db");
 
 // Create a route for root - /
 app.get("/", function (req, res) {
   res.render("pages/index", { title: "GoHire home page" });
 });
-
-// Create a route for testing the db
-app.get("/db_test", function (req, res) {
-  // Assumes a table called test_table exists in your database
-  sql = "select * from test_table";
-  db.query(sql).then((results) => {
-    console.log(results);
-    res.send(results);
-  });
-});
-
-// // Create a route for the dashboard page
-// app.get("/dashboard", function (req, res) {
-//   res.render("pages/user", { title: "User Dashboard" });
-// });
 
 
 // Redirect the dashboard route to the user page

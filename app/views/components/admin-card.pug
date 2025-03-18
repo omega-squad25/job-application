@@ -1,0 +1,10 @@
+mixin adminCard(cardIcon, title, value)
+  div.admin-card
+    div.card-item
+      img(src=cardIcon, alt='Admin card icon')
+      div.card-texts  
+        p.title= title
+        p.value= value
+
+block styles
+  link(rel='stylesheet', href='/css/admin.css')              

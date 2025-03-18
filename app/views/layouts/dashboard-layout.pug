@@ -9,11 +9,13 @@ html
     link(rel='stylesheet', href='/css/dashboard.css')
     block styles
   body 
-    // Include the navbar component
+    // Include the navbar component with a custom background color
+    // Include the navbar component with a custom background color
     include ../components/navbar
+    +navbar('#fff', 'inherit', '100%', '0px 40px')
     
     div.dashboard-layout
-      // Include the sidebar component
+      // Include the sidebar components
       include ../components/sidebar
       div.main-content
         block content

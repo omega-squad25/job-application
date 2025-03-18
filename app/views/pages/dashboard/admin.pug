@@ -3,12 +3,66 @@ extends ../../layouts/dashboard-layout
 block content
   - var currentPage = 'admin'
 
+  // Include the sidebar component and pass the currentPage variable
+  include ../../components/sidebar
+
   div.contents
-    h1.title Admin Dashboard
-    p This is the admin dashboard page content.
+    div.card-container
+      // Include the card component and pass props
+      include ../../components/admin-card
+      +adminCard('/assets/images/admin-card3.svg', 'Total Number of Jobs', '15')
+      +adminCard('/assets/images/admin-card2.svg', 'Total Approved Jobs', '10')
+      +adminCard('/assets/images/admin-card1.svg', 'Total Pending Jobs', '5')
+    div.table-container 
+      div.table-header  
+        p.table-title Jobs 
+        div.create-job.modal-trigger(data-target='#modal-create-job', style='cursor: pointer;')
+          button.btn.modal-trigger(data-target='#modal-create-job', style='cursor: pointer;')
+            i.fa-solid.fa-plus
+            p Create Job
+
+      // Include the table component and pass the title, headers, and rows
+      include ../../components/table
+      +table(['Job Title', 'Company', 'Date Posted', 'Location', 'Status', 'Action' ], [
+        ['Data Analyst', 'Google', '12/10/23', 'London, UK', 'Approved', 'action'],
+        ['Software Engineer', 'Facebook', '12/10/23', 'New York, USA', 'Pending', 'action'],
+        ['Product Manager', 'Amazon', '12/10/23', 'Seattle, USA', 'Approved', 'action'],
+        ['Product Manager', 'Amazon', '12/10/23', 'Seattle, USA', 'Approved', 'action'],
+        ['Product Manager', 'Amazon', '12/10/23', 'Seattle, USA', 'Approved', 'action'],
+        ['Product Manager', 'Amazon', '12/10/23', 'Seattle, USA', 'Approved', 'action'],
+      ])
+
+    // Include the modal component for create job
+    div#modal-create-job.modal-overlay.hidden
+      div.modal
+        div.modal-header
+          h2.modal-title Create Job
+          span.modal-close &times;
+        div.modal-body
+          form
+            div.form-group
+              label(for='job-title') Job Title
+              input#job-title(type='text', name='job-title', placeholder='Data Analyst', required)
+            div.form-group
+              label(for='company-name') Company Name
+              input#company-name(type='text', name='company-name', placeholder='Google', required)
+            div.form-group
+              label(for='job-type') Job Type
+              input#job-type(type='text', name='job-type', placeholder='Remote', required)
+            div.form-group
+              label(for='location') Location
+              input#location(type='text', name='location', placeholder='London, UK', required)
+            div.form-group
+              label(for='job-description') Job Description
+              textarea#job-description(name='job-description', placeholder='Job Description', required)
+        div.modal-footer
+          button.modal-close-btn Cancel
+          button.modal-save-btn Save
 
 block scripts
   script(src='/js/admin.js')
+  script(src='/js/modal.js')
 
 block styles
   link(rel='stylesheet', href='/css/admin.css')
+  link(rel='stylesheet', href='/css/modal.css')

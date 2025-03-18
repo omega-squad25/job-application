@@ -3,6 +3,9 @@ extends ../../../layouts/dashboard-layout
 block content
   - var currentPage = 'user'
 
+  // Include the sidebar component and pass the currentPage variable
+  include ../../../components/sidebar
+
   div.contents
     div.personal-info
       div.avatar-wrapper
@@ -26,7 +29,7 @@ block content
 
 block scripts
   script(src='/js/dashboard.js')
-  script(src='/js/avatar-upload.js')
+  script(src='/js/user.js')
   script(src='/js/tab.js')
 
 block styles
