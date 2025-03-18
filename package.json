@@ -2,6 +2,7 @@
   "name": "sd2-example",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "supervisor index.js",
@@ -17,6 +18,11 @@
     "pug": "^3.0.3",
     "sqlite3": "^5.1.7",
     "supervisor": "^0.12.0",
-    "yup": "^1.6.1"
+    "yup": "^1.6.1",
+    "bcryptjs": "^3.0.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "sequelize": "^6.37.6",
+    "uuid": "^11.1.0"
   }
 }
