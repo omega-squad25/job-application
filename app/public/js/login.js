@@ -62,13 +62,15 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       const data = await response.json();
+      console.log('data', data)
 
       if (response.ok) {
         toastr.success("Login successful!");
 
-        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("user", JSON.stringify(data?.user));
+        localStorage.setItem("token", JSON.stringify(data?.token));
 
-        if (data.user.isAdmin === true) {
+        if (data?.user?.isAdmin === true) {
           setTimeout(() => {
             window.location.href = "/dashboard/admin";
           }, 1500);

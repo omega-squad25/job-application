@@ -39,30 +39,33 @@ block content
           h2.modal-title Create Job
           span.modal-close &times;
         div.modal-body
-          form
+          form#create-job-form
             div.form-group
-              label(for='job-title') Job Title
-              input#job-title(type='text', name='job-title', placeholder='Data Analyst', required)
+              label(for='title') Job Title
+              input(type='text', name='title', id='title', placeholder='Data Analyst', required)
             div.form-group
-              label(for='company-name') Company Name
-              input#company-name(type='text', name='company-name', placeholder='Google', required)
-            div.form-group
-              label(for='job-type') Job Type
-              input#job-type(type='text', name='job-type', placeholder='Remote', required)
+              label(for='company') Company Name
+              input(type='text', name='company', id='company', placeholder='Google', required)
             div.form-group
               label(for='location') Location
-              input#location(type='text', name='location', placeholder='London, UK', required)
+              input(type='text', name='location', id='location', placeholder='London, UK', required)
             div.form-group
-              label(for='job-description') Job Description
-              textarea#job-description(name='job-description', placeholder='Job Description', required)
-        div.modal-footer
-          button.modal-close-btn Cancel
-          button.modal-save-btn Save
+              label(for='description') Job Description
+              textarea(name='description', id='description', placeholder='Job Description', required)
+            div.modal-footer
+              button.modal-close-btn Cancel
+              button.modal-save-btn(type='submit') Save
 
-block scripts
-  script(src='/js/admin.js')
-  script(src='/js/modal.js')
 
 block styles
+  link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css')
   link(rel='stylesheet', href='/css/admin.css')
   link(rel='stylesheet', href='/css/modal.css')
+  link(rel='stylesheet', href='/css/global-styles.css')
+
+
+block scripts
+  script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js")
+  script(src='/js/admin.js')
+  script(src='/js/modal.js')

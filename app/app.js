@@ -2,11 +2,15 @@
 import express from "express";
 import authRoutes from "./routes/auth.js";
 import jobRoutes from "./routes/jobs.js";
+import cors from "cors";
 // import db from "./services/db.js";
 // Import the db module
 
 // Create express app
-var app = express();
+const app = express();
+
+//add cors
+app.use(cors());
 
 // Add static files location
 app.use(express.static("app/public"));
