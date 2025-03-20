@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
       submitButton.innerText = "Processing...";
 
       // Get form inputs
-      const location = document.getElementById("location")?.value.trim();
+      const location = document.getElementById("gps")?.value.trim();
       const title = document.getElementById("title")?.value.trim();
       const company = document.getElementById("company")?.value.trim();
       const description = document.getElementById("description")?.value.trim();
@@ -63,11 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const BASE_URL = "http://localhost:3000";
 
     try {
-      console.log("Creating job with data:", jobData);
-
       // Get token from local storage
       const token = localStorage.getItem("token");
-      if (!token) {
+      const cleanToken = token.replace(/^"(.*)"$/, "$1");
+
+      if (!token || !cleanToken) {
         toastr.error("Authentication token not found");
         return;
       }
@@ -77,18 +77,12 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${cleanToken}`,
         },
-        body: JSON.stringify({
-          title,
-          company,
-          location,
-          description,
-        }),
+        body: JSON.stringify(jobData),
       });
 
       const data = await response.json();
-      console.log("API response:", data);
 
       if (response.ok) {
         toastr.success(data.message || "Job created successfully");
