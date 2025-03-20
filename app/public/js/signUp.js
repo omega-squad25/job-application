@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (passwordField.type === "password") {
         passwordField.type = "text";
         passwordEyeIcon.querySelector("img").src =
-          "/assets/images/eye-icon.svg"; // Change to "eye open" icon
+          "/assets/images/eye-icon.svg"; 
       } else {
         passwordField.type = "password";
         passwordEyeIcon.querySelector("img").src =
@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
-  // Toggle password visibility for the confirm password field
   if (confirmPasswordEyeIcon) {
     confirmPasswordEyeIcon.addEventListener("click", function () {
       if (confirmPasswordField.type === "password") {
@@ -85,8 +83,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
 
       if (response.ok) {
-        toastr.success(data.message || "Registration successful!");
-        window.location.href = "/login";
+        toastr.success("Registration successful!");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
       } else {
         toastr.error(data.message || "An error occurred during signup.");
       }
