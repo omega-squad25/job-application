@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         passwordField.type = "password";
         passwordEyeIcon.querySelector("img").src =
-          "/assets/images/eye-icon.svg"; // Change to "eye closed" icon
+          "/assets/images/blind.svg";
       }
     });
   }
@@ -35,11 +35,17 @@ document.addEventListener("DOMContentLoaded", function () {
   loginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
+    const loginButton = document.querySelector("#loginForm button[type='submit']");
+    loginButton.disabled = true;
+    loginButton.innerText = "Processing...";
+
     const email = document.getElementById("email")?.value.trim();
     const password = document.getElementById("password")?.value.trim();
 
     if (!email || !password) {
       toastr.error("Please fill in all fields.");
+      loginButton.disabled = false;
+      loginButton.innerText = "Login";
       return;
     }
 
@@ -60,6 +66,8 @@ document.addEventListener("DOMContentLoaded", function () {
       if (response.ok) {
         toastr.success("Login successful!");
 
+        localStorage.setItem("user", JSON.stringify(data.user));
+
         if (data.user.isAdmin === true) {
           setTimeout(() => {
             window.location.href = "/dashboard/admin";
@@ -71,9 +79,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else {
         toastr.error(data.message || "An error occurred during login.");
+        loginButton.disabled = false;
+        loginButton.innerText = "Login";
       }
     } catch (error) {
       toastr.error("An unexpected error occurred.");
+      loginButton.disabled = false;
+      loginButton.innerText = "Login";
     }
   });
 });
