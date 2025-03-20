@@ -3,8 +3,7 @@ import express from "express";
 import authRoutes from "./routes/auth.js";
 import jobRoutes from "./routes/jobs.js";
 import cors from "cors";
-// import db from "./services/db.js";
-// Import the db module
+
 
 // Create express app
 const app = express();
@@ -31,8 +30,6 @@ app.use("/api/jobs", jobRoutes);
 app.set("view engine", "pug");
 app.set("views", "./app/views");
 
-// // Get the functions in the db.js file to use
-// const db = require("./services/db");
 
 // Create a route for root - /
 app.get("/", function (req, res) {
