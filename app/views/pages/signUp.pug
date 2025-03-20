@@ -8,10 +8,10 @@ block content
 
     .signUp-right
       div.logo
-          img(src='/assets/images/logo.png' alt='Logo' class='logo')
+          img(src='/assets/images/logo.svg' alt='Logo' class='logo')
       h2 Create your Account
 
-      form.signUp-form(action='/dashboard/user')
+      form.signUp-form(action='/api/auth/register' method='POST' id='signupForm')
         .form-group 
           +textField('fullname', 'Full Name', 'text', 'outlined')
 
@@ -33,7 +33,10 @@ block content
 block styles
   link(rel='stylesheet', href='/css/signUp.css')
   link(rel='stylesheet', href='/css/global-styles.css')
+  link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css")
 
 block scripts
+  script(src="https://code.jquery.com/jquery-3.6.0.min.js")
   script(src='https://cdn.jsdelivr.net/npm/yup@0.32.9/dist/yup.min.js')
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js")
   script(src='/js/signUp.js')
