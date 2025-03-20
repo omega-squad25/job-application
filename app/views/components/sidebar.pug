@@ -1,9 +1,22 @@
 div.sidebar
-  ul.sidebar-menu
-    if (class=currentPage === 'admin')
+  ul.sidebar-menu#sidebarMenu
       li: a.link(href='/dashboard/admin', class=currentPage === 'admin' ? 'active' : '') Admin
-    else
       li: a.link(href='/dashboard/user', class=currentPage === 'user' ? 'active' : '') User
 
 block styles
   link(rel='stylesheet', href='/css/sidebar.css')
+
+block scripts
+  script(src='/js/sidebar.js')  
+
+
+//- div.sidebar
+//-   ul.sidebar-menu#sidebarMenu
+//-     //- The menu items will be dynamically populated by JavaScript
+//-     //- based on the user's isAdmin status
+
+//- block styles
+//-   link(rel='stylesheet', href='/css/sidebar.css')
+
+//- block scripts
+//-   script(src='/js/sidebar.js')
