@@ -38,7 +38,8 @@ app.get("/", function (req, res) {
 
 // Redirect the dashboard route to the user page
 app.get("/dashboard", function (req, res) {
-  res.redirect("/dashboard/user/index");
+  const user = JSON.parse(localStorage.getItem("user")); // Or use session/cookies
+  res.render("dashboard", { user, currentPage: "user" });
 });
 
 // Create a route for the user dashboard page

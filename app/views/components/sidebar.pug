@@ -1,7 +1,9 @@
 div.sidebar
   ul.sidebar-menu
-    li: a.link(href='/dashboard/user', class=currentPage === 'user' ? 'active' : '') User
-    li: a.link(href='/dashboard/admin', class=currentPage === 'admin' ? 'active' : '') Admin
+    if (class=currentPage === 'admin')
+      li: a.link(href='/dashboard/admin', class=currentPage === 'admin' ? 'active' : '') Admin
+    else
+      li: a.link(href='/dashboard/user', class=currentPage === 'user' ? 'active' : '') User
 
 block styles
   link(rel='stylesheet', href='/css/sidebar.css')

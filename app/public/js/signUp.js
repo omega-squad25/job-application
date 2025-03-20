@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         passwordField.type = "password";
         passwordEyeIcon.querySelector("img").src =
-          "/assets/images/eye-icon.svg"; // Change to "eye closed" icon
+          "/assets/images/blind.svg";
       }
     });
   }
@@ -43,13 +43,17 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         confirmPasswordField.type = "password";
         confirmPasswordEyeIcon.querySelector("img").src =
-          "/assets/images/eye-icon.svg";
+          "/assets/images/blind.svg";
       }
     });
   }
 
   signupForm.addEventListener("submit", async function (event) {
     event.preventDefault();
+
+    const signUpButton = document.querySelector("#signUpForm button[type='submit']");
+    signUpButton.disabled = true;
+    signUpButton.innerText = "Processing...";
 
     const fullName = document.getElementById("fullname")?.value.trim();
     const email = document.getElementById("email")?.value.trim();
@@ -58,11 +62,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!fullName || !email || !password || !confirmPassword) {
       toastr.error("Please fill in all fields.");
+      signUpButton.disabled = false;
+      signUpButton.innerText = "Sign Up";
       return;
     }
 
     if (password !== confirmPassword) {
       toastr.error("Passwords do not match.");
+      signUpButton.disabled = false;
+      signUpButton.innerText = "Sign Up";
       return;
     }
 
@@ -89,9 +97,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 1500);
       } else {
         toastr.error(data.message || "An error occurred during signup.");
+        signUpButton.disabled = false;
+        signUpButton.innerText = "Sign Up";
       }
     } catch (error) {
       console.error("Error:", error);
+      signUpButton.disabled = false;
+      signUpButton.innerText = "Sign Up";
       toastr.error("An unexpected error occurred.");
     }
   });
