@@ -8,5 +8,5 @@ mixin textField(id, label, type = 'text', variant = 'outlined')
       required
     )
     if type === 'password'
-      span.eye-icon(onclick='togglePasswordVisibility()')
+      span.eye-icon(id=`${id}-eye`)
         img(src='/assets/images/eye-icon.svg' alt='Toggle Password Visibility')

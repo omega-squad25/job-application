@@ -36,7 +36,7 @@ dotenv.config();
 console.log(process.env.DB_CONTAINER);
 const sequelize = new Sequelize({
   dialect: "mysql",
-  host: process.env.DB_CONTAINER, // e.g., 'db' from docker-compose
+  host: process.env.MYSQL_HOST, // e.g., 'db' from docker-compose
   port: process.env.DB_PORT || 3306,
   username: process.env.MYSQL_ROOT_USER,
   password: process.env.MYSQL_ROOT_PASSWORD,
@@ -64,7 +64,7 @@ const initDB = async () => {
     console.log("Database connection established successfully.");
 
     // Sync all models
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     console.log("Database tables synchronized successfully.");
   } catch (error) {
     console.error("Unable to connect to the database:", error);
