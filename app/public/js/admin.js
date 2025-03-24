@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const BASE_URL = "http://localhost:3000";
+
   toastr.options = {
     closeButton: true,
     progressBar: true,
@@ -10,30 +12,25 @@ document.addEventListener("DOMContentLoaded", function () {
     extendedTimeOut: "1000",
   };
 
+  // Fetch all jobs when page loads
+  fetchAndRenderJobs();
+
   // Get form element
   const createJobForm = document.getElementById("create-job-form");
 
   if (createJobForm) {
-    console.log("Found form, adding event listener");
-
     createJobForm.addEventListener("submit", async function (event) {
       event.preventDefault();
-      console.log("Form submitted");
 
-      // Get submit button
       const submitButton = createJobForm.querySelector("button[type='submit']");
       submitButton.disabled = true;
       submitButton.innerText = "Processing...";
 
-      // Get form inputs
-      const location = document.getElementById("gps")?.value.trim();
       const title = document.getElementById("title")?.value.trim();
       const company = document.getElementById("company")?.value.trim();
+      const location = document.getElementById("gps")?.value.trim();
       const description = document.getElementById("description")?.value.trim();
 
-      console.log("Job data:", { title, company, location, description });
-
-      // Validation
       if (!title || !company || !location || !description) {
         toastr.error("All fields are required.");
         submitButton.disabled = false;
@@ -41,12 +38,14 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Create job data object
       const jobData = { title, company, location, description };
 
       try {
-        await createJob(jobData);
-        createJobForm.reset(); // Reset form on success
+        const newJob = await createJob(jobData);
+        if (newJob) {
+          addJobToTable(newJob);
+        }
+        createJobForm.reset();
       } catch (error) {
         console.error("Error:", error);
       }
@@ -54,30 +53,87 @@ document.addEventListener("DOMContentLoaded", function () {
       submitButton.disabled = false;
       submitButton.innerText = "Create Job";
     });
-  } else {
-    console.error("Form element not found!");
   }
 
-  // Function to create a job
-  async function createJob(jobData) {
-    const BASE_URL = "http://localhost:3000";
-
+  async function fetchAndRenderJobs() {
     try {
-      // Get token from local storage
-      const token = localStorage.getItem("token");
-      const cleanToken = token.replace(/^"(.*)"$/, "$1");
+      const response = await fetch(`${BASE_URL}/api/jobs`);
+      const data = await response.json();
 
-      if (!token || !cleanToken) {
+      if (response.ok) {
+        renderJobs(data.data.jobs);
+      } else {
+        toastr.error(data.message || "Failed to fetch jobs");
+      }
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+    }
+  }
+
+  function renderJobs(jobs) {
+    const tableBody = document.querySelector(".table-container table tbody");
+    if (!tableBody) return;
+
+    tableBody.innerHTML = ""; // Clear previous rows before rendering
+
+    jobs.forEach((job) => {
+      addJobToTable(job);
+    });
+  }
+
+  function addJobToTable(job) {
+    const tableBody = document.querySelector(".table-container table tbody");
+    if (!tableBody) return;
+
+    // Check if job already exists in the table to prevent duplicates
+    const existingJob = [...tableBody.querySelectorAll("tr")].some((row) =>
+      row.querySelector("td")?.innerText.includes(job.title)
+    );
+
+    if (existingJob) return;
+
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+      <td>${job.title}</td>
+      <td>${job.company}</td>
+      <td>${new Date(job.createdAt).toLocaleDateString()}</td>
+      <td>${job.location}</td>
+      <td>${job.status || "Pending"}</td>
+      <td>
+        <a class="action-icon view-icon" href="#" title="View" data-id="${
+          job.id
+        }">
+          <i class="fa fa-eye"></i>
+        </a>
+        <a class="action-icon edit-icon" href="#" title="Edit" data-id="${
+          job.id
+        }">
+          <i class="fa fa-edit"></i>
+        </a>
+        <a class="action-icon delete-icon" href="#" title="Delete" data-id="${
+          job.id
+        }">
+          <i class="fa fa-trash"></i>
+        </a>
+      </td>
+    `;
+
+    tableBody.appendChild(newRow);
+  }
+
+  async function createJob(jobData) {
+    try {
+      const token = localStorage.getItem("token")?.replace(/^"(.*)"$/, "$1");
+      if (!token) {
         toastr.error("Authentication token not found");
-        return;
+        return null;
       }
 
-      // Make API request
       const response = await fetch(`${BASE_URL}/api/jobs`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${cleanToken}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(jobData),
       });
@@ -86,31 +142,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (response.ok) {
         toastr.success(data.message || "Job created successfully");
-
-        // Close the modal
-        const modal = document.getElementById("modal-create-job");
-        if (modal) modal.classList.add("hidden");
-
-        // Reload the page or update the table
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
+        document.getElementById("modal-create-job")?.classList.add("hidden");
+        return data.data;
       } else {
         toastr.error(data.message || "Failed to create job");
+        return null;
       }
     } catch (error) {
       console.error("Error creating job:", error);
       toastr.error("An error occurred. Please try again.");
+      return null;
     }
   }
-
-  // Add event listeners for closing the modal
-  document
-    .querySelectorAll(".modal-close, .modal-close-btn")
-    .forEach((button) => {
-      button.addEventListener("click", function () {
-        const modal = document.getElementById("modal-create-job");
-        if (modal) modal.classList.add("hidden");
-      });
-    });
 });
