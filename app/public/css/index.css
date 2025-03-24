@@ -1,31 +1,14 @@
-body,
-html {
-  height: 100%;
-  margin: 0;
-  font-family: Arial, sans-serif;
-  box-sizing: border-box;
-}
-
-.container {
-  width: 100%; 
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0;
-  justify-content: center;
-}
-
 .top-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 30px; 
+  gap: 30px;
   margin-top: -5%;
-  
   width: 100%;
 }
 
 .content {
-  width: 45%; 
+  width: 45%;
   margin-top: -7%;
 }
 
@@ -60,12 +43,13 @@ html {
   max-width: 250px;
   margin-top: 20px;
   margin-bottom: 6%;
-  display: inline-block; 
-  text-decoration: none;}
+  display: inline-block;
+  text-decoration: none;
+}
 
 .get-started a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 .get-started:hover {
@@ -100,23 +84,22 @@ html {
 }
 
 .img-container {
-  width: 55%; 
+  width: 55%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
 .img-container img {
-  max-width: 200%;
+  max-width: 100%;
   height: auto;
-
 }
 
 .brands-section {
-    background-color: #F1F7FA;
-    text-align: center;
-    padding: 40px 10px;
-    margin-top: -5%;
+  background-color: #f1f7fa;
+  text-align: center;
+  padding: 40px 10px;
+  margin-top: -5%;
 }
 .brands-section span {
   color: #007aff;
@@ -135,22 +118,39 @@ html {
   text-align: center;
 }
 
-
 .features {
-  display: grid;
-  grid-template-columns:repeat(4, 1fr);
-  gap: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .feature {
-  padding: 30px 45px;
+  width: 32%;
+  padding: 30px;
   border-radius: 20px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   box-shadow: 0 8px 20px rgba(0, 122, 255, 0.2);
   transition: transform 0.3s ease;
   display: flex;
-  align-items: flex-start; 
-  gap: 40px; 
+  align-items: flex-start;
+  gap: 20px;
+}
+
+@media (max-width: 960px) {
+  .feature {
+    width: 47%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .feature {
+    width: 100%;
+    flex-direction: column;
+    gap: 15px;
+  }
 }
 
 .feature:hover {
@@ -158,15 +158,13 @@ html {
   color: white;
 }
 
-
-
-.feature:hover p{
-    color: white;
+.feature:hover p {
+  color: white;
 }
 
 .feature:hover img {
-    filter: brightness(0) invert(1);
-  }
+  filter: brightness(0) invert(1);
+}
 
 .feature-img {
   width: 50px;
