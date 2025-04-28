@@ -12,10 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
     extendedTimeOut: "1000",
   };
 
-  // Fetch all jobs when page loads
   fetchAndRenderJobs();
 
-  // Get form element
   const createJobForm = document.getElementById("create-job-form");
 
   if (createJobForm) {
@@ -28,13 +26,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const title = document.getElementById("title")?.value.trim();
       const company = document.getElementById("company")?.value.trim();
-      const location = document.getElementById("gps")?.value.trim();
+      const location = document.getElementById("gps")?.value.trim(); // Note: ID is "gps", not "location"
       const description = document.getElementById("description")?.value.trim();
 
       if (!title || !company || !location || !description) {
         toastr.error("All fields are required.");
         submitButton.disabled = false;
-        submitButton.innerText = "Create Job";
+        submitButton.innerText = "Save";
         return;
       }
 
@@ -44,60 +42,101 @@ document.addEventListener("DOMContentLoaded", function () {
         const newJob = await createJob(jobData);
         if (newJob) {
           addJobToTable(newJob);
+          addTableIconEventListeners();
+          createJobForm.reset();
         }
-        createJobForm.reset();
       } catch (error) {
         console.error("Error:", error);
       }
 
       submitButton.disabled = false;
-      submitButton.innerText = "Create Job";
+      submitButton.innerText = "Save";
     });
   }
 
-  async function fetchAndRenderJobs() {
-    try {
-      const response = await fetch(`${BASE_URL}/api/jobs`);
-      const data = await response.json();
+async function fetchAndRenderJobs() {
+  try {
+    const token = localStorage.getItem("token");
+    const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
 
-      if (response.ok) {
-        renderJobs(data.data.jobs);
-      } else {
-        toastr.error(data.message || "Failed to fetch jobs");
-      }
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
+    if (!parsedToken) {
+      toastr.error("Authentication token not found");
+      return; // Exit early if no token
     }
+
+    const response = await fetch(`${BASE_URL}/api/jobs/admin`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${parsedToken}`,
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      renderJobs(data.data.jobs || []);
+    } else {
+      toastr.error(data.message || "Failed to fetch jobs");
+    }
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    toastr.error("Failed to connect to the server");
   }
+}
+
 
   function renderJobs(jobs) {
     const tableBody = document.querySelector(".table-container table tbody");
     if (!tableBody) return;
 
-    tableBody.innerHTML = ""; // Clear previous rows before rendering
+    tableBody.innerHTML = "";
+
+    if (jobs.length === 0) {
+      const emptyRow = document.createElement("tr");
+      const emptyCell = document.createElement("td");
+      const colSpan = document.querySelectorAll(
+        ".table-container table thead th"
+      ).length;
+      emptyCell.setAttribute("colspan", colSpan || 6);
+      emptyCell.textContent = "No data available";
+      emptyRow.appendChild(emptyCell);
+      tableBody.appendChild(emptyRow);
+      return;
+    }
 
     jobs.forEach((job) => {
       addJobToTable(job);
     });
+
+    addTableIconEventListeners();
   }
 
   function addJobToTable(job) {
     const tableBody = document.querySelector(".table-container table tbody");
     if (!tableBody) return;
 
-    // Check if job already exists in the table to prevent duplicates
-    const existingJob = [...tableBody.querySelectorAll("tr")].some((row) =>
-      row.querySelector("td")?.innerText.includes(job.title)
-    );
+    // Clear "No data available" row if it exists
+    if (tableBody.querySelector("tr td[colspan]")) {
+      tableBody.innerHTML = "";
+    }
 
-    if (existingJob) return;
+    const existingJobs = [...tableBody.querySelectorAll("tr")];
+    const jobExists = existingJobs.some((row) => {
+      const idElem = row.querySelector(".action-icon");
+      return idElem && idElem.getAttribute("data-id") === job.id;
+    });
+
+    if (jobExists) return;
 
     const newRow = document.createElement("tr");
     newRow.innerHTML = `
-      <td>${job.title}</td>
-      <td>${job.company}</td>
-      <td>${new Date(job.createdAt).toLocaleDateString()}</td>
-      <td>${job.location}</td>
+      <td>${job.title || ""}</td>
+      <td>${job.company || ""}</td>
+      <td>${
+        job.createdAt ? new Date(job.createdAt).toLocaleDateString() : ""
+      }</td>
+      <td>${job.location || ""}</td>
       <td>${job.status || "Pending"}</td>
       <td>
         <a class="action-icon view-icon" href="#" title="View" data-id="${
@@ -123,8 +162,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function createJob(jobData) {
     try {
-      const token = localStorage.getItem("token")?.replace(/^"(.*)"$/, "$1");
-      if (!token) {
+      const token = localStorage.getItem("token");
+      const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
+
+      if (!parsedToken) {
         toastr.error("Authentication token not found");
         return null;
       }
@@ -133,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${parsedToken}`,
         },
         body: JSON.stringify(jobData),
       });
@@ -154,4 +195,120 @@ document.addEventListener("DOMContentLoaded", function () {
       return null;
     }
   }
+
+  function addTableIconEventListeners() {
+    document.querySelectorAll(".view-icon").forEach((icon) => {
+      icon.removeEventListener("click", viewHandler);
+      icon.addEventListener("click", viewHandler);
+    });
+
+    document.querySelectorAll(".edit-icon").forEach((icon) => {
+      icon.removeEventListener("click", editHandler);
+      icon.addEventListener("click", editHandler);
+    });
+
+    document.querySelectorAll(".delete-icon").forEach((icon) => {
+      icon.removeEventListener("click", deleteHandler);
+      icon.addEventListener("click", deleteHandler);
+    });
+  }
+
+  function viewHandler(event) {
+    event.preventDefault();
+    const jobId = this.getAttribute("data-id");
+    openViewModal(jobId);
+  }
+
+  function editHandler(event) {
+    event.preventDefault();
+    const jobId = this.getAttribute("data-id");
+    openEditModal(jobId);
+  }
+
+  function deleteHandler(event) {
+    event.preventDefault();
+    const jobId = this.getAttribute("data-id");
+    openDeleteModal(jobId);
+  }
+
+  async function openViewModal(jobId) {
+    console.log("View job:", jobId);
+    const modal = document.getElementById("modal-view");
+    if (modal) {
+      // Here you would typically fetch job details and populate the modal
+      modal.classList.remove("hidden");
+    }
+  }
+
+  async function openEditModal(jobId) {
+    console.log("Edit job:", jobId);
+    const modal = document.getElementById("modal-edit");
+    if (modal) {
+      // Here you would typically fetch job details and populate the form
+      modal.classList.remove("hidden");
+    }
+  }
+
+  function openDeleteModal(jobId) {
+    if (confirm("Are you sure you want to delete this job?")) {
+      console.log("Delete job:", jobId);
+      // Implement deletion logic here
+      deleteJob(jobId);
+    }
+  }
+
+  async function deleteJob(jobId) {
+    try {
+      const token = localStorage.getItem("token");
+      const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
+
+      if (!parsedToken) {
+        toastr.error("Authentication token not found");
+        return;
+      }
+
+      const response = await fetch(`${BASE_URL}/api/jobs/${jobId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${parsedToken}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toastr.success(data.message || "Job deleted successfully");
+        // Remove the job from the table
+        const jobRow = document
+          .querySelector(`.delete-icon[data-id="${jobId}"]`)
+          ?.closest("tr");
+        if (jobRow) {
+          jobRow.remove();
+        }
+        // Refresh if table is now empty
+        const tableBody = document.querySelector(
+          ".table-container table tbody"
+        );
+        if (tableBody && tableBody.children.length === 0) {
+          fetchAndRenderJobs();
+        }
+      } else {
+        toastr.error(data.message || "Failed to delete job");
+      }
+    } catch (error) {
+      console.error("Error deleting job:", error);
+      toastr.error("An error occurred. Please try again.");
+    }
+  }
+
+  document
+    .querySelectorAll(".modal-close, .modal-close-btn")
+    .forEach((closeBtn) => {
+      closeBtn.addEventListener("click", function () {
+        const modalOverlay = this.closest(".modal-overlay");
+        if (modalOverlay) {
+          modalOverlay.classList.add("hidden");
+        }
+      });
+    });
 });

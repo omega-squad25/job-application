@@ -3,16 +3,16 @@ extends ../../layouts/dashboard-layout
 block content
   - var currentPage = 'admin'
 
-  // Include the sidebar component and pass the currentPage variable
+  // Sidebar
   include ../../components/sidebar
 
   div.contents
     div.card-container
-      // Include the card component and pass props
       include ../../components/admin-card
       +adminCard('/assets/images/admin-card3.svg', 'Total Number of Jobs', '15')
       +adminCard('/assets/images/admin-card2.svg', 'Total Approved Jobs', '10')
       +adminCard('/assets/images/admin-card1.svg', 'Total Pending Jobs', '5')
+
     div.table-container 
       div.table-header  
         p.table-title Jobs 
@@ -21,11 +21,24 @@ block content
             i.fa-solid.fa-plus
             p Create Job
 
-      // Include the table component and pass the title, headers, and rows
+      // Table
       include ../../components/table
-      +table(['Job Title', 'Company', 'Date Posted', 'Location', 'Status', 'Action' ], [])
+      - var jobsData = jobs || []
+      +table(
+        ['Job Title', 'Company', 'Date Posted', 'Location', 'Status', 'Action'], 
+        jobsData.map(function(job) {
+          return [
+            job.title, 
+            job.company, 
+            new Date(job.createdAt).toLocaleDateString(), 
+            job.location, 
+            job.status || 'Pending', 
+            { id: job.id }
+          ];
+        })
+      )
 
-    // Include the modal component for create job
+    // Modal for creating a job
     div#modal-create-job.modal-overlay.hidden
       div.modal
         div.modal-header
@@ -40,22 +53,20 @@ block content
               label(for='company') Company Name
               input(type='text', name='company', id='company', placeholder='Google', required)
             div.form-group
-              label(for='location') Location
-              input(type='text', name='location', id='gps', placeholder='London, UK', required)
+              label(for='gps') Location
+              input(type='text', name='gps', id='gps', placeholder='London, UK', required)
             div.form-group
               label(for='description') Job Description
               textarea(name='description', id='description', placeholder='Job Description', required)
             div.modal-footer
-              button.modal-close-btn Cancel
+              button.modal-close-btn(type='button') Cancel
               button.modal-save-btn(type='submit') Save
-
 
 block styles
   link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css')
   link(rel='stylesheet', href='/css/admin.css')
   link(rel='stylesheet', href='/css/modal.css')
   link(rel='stylesheet', href='/css/global-styles.css')
-
 
 block scripts
   script(src="https://code.jquery.com/jquery-3.6.0.min.js")

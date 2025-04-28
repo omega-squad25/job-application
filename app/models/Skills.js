@@ -1,13 +1,12 @@
-import { v4 as uuidv4 } from "uuid";
-import { DataTypes } from "sequelize";
-import sequelize from "../services/db.js";
+import { v4 as uuidv4 } from 'uuid';
+import { DataTypes } from 'sequelize';
+import sequelize from '../services/db.js';
 
 const Skill = sequelize.define(
- "Skill",
+ 'Skill',
  {
   id: {
-   type: DataTypes.INTEGER,
-   autoIcrement: true,
+   type: DataTypes.UUID,
    primaryKey: true,
    defaultValue: () => uuidv4(),
   },
@@ -16,9 +15,13 @@ const Skill = sequelize.define(
    allowNull: false,
    unique: true,
   },
+  yearsOfExperience: {
+   type: DataTypes.INTEGER,
+   allowNull: true,
+  },
  },
  {
-  tableName: "Skills",
+  tableName: 'Skills',
   timestamps: false,
  }
 );

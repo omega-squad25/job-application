@@ -1,11 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
-import { DataTypes } from "sequelize";
-import sequelize from "../services/db.js";
-import User from "./User.js";
-import Job from "./Job.js";
+import { v4 as uuidv4 } from 'uuid';
+import { DataTypes } from 'sequelize';
+import sequelize from '../services/db.js';
+import User from './User.js';
+import Job from './Job.js';
 
 const SavedJob = sequelize.define(
- "SavedJob",
+ 'SavedJob',
  {
   id: {
    type: DataTypes.UUID,
@@ -17,7 +17,7 @@ const SavedJob = sequelize.define(
    allowNull: false,
    references: {
     model: User,
-    key: "id",
+    key: 'id',
    },
   },
   jobId: {
@@ -25,21 +25,15 @@ const SavedJob = sequelize.define(
    allowNull: false,
    references: {
     model: Job,
-    key: "id",
+    key: 'id',
    },
   },
  },
  {
-  tableName: "SavedJobs",
+  tableName: 'SavedJobs',
   timestamps: true,
-  indexes: [{ unique: true, fields: ["userId", "jobId"] }], 
+  indexes: [{ unique: true, fields: ['userId', 'jobId'] }],
  }
 );
-
-// Relationships
-User.hasMany(SavedJob, { foreignKey: "userId" });
-Job.hasMany(SavedJob, { foreignKey: "jobId" });
-SavedJob.belongsTo(User, { foreignKey: "userId" });
-SavedJob.belongsTo(Job, { foreignKey: "jobId" });
 
 export default SavedJob;
