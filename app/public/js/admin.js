@@ -306,10 +306,8 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        toastr.success(data.message || "Job deleted successfully");
+      if (response.status === 204 || response.ok) {
+        toastr.success("Job deleted successfully");
         // Remove the job from the table
         const jobRow = document
           .querySelector(`.delete-icon[data-id="${jobId}"]`)
@@ -320,7 +318,15 @@ document.addEventListener("DOMContentLoaded", function () {
         // Refresh statistics after deletion
         fetchAndRenderJobs();
       } else {
-        toastr.error(data.message || "Failed to delete job");
+        // Try to parse error message if there is content
+        let errorMessage = "Failed to delete job";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch (e) {
+          // If parsing fails, use default error message
+        }
+        toastr.error(errorMessage);
       }
     } catch (error) {
       console.error("Error deleting job:", error);
