@@ -54,37 +54,40 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-async function fetchAndRenderJobs() {
-  try {
-    const token = localStorage.getItem("token");
-    const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
+  async function fetchAndRenderJobs() {
+    try {
+      const token = localStorage.getItem("token");
+      const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
 
-    if (!parsedToken) {
-      toastr.error("Authentication token not found");
-      return; // Exit early if no token
+      if (!parsedToken) {
+        toastr.error("Authentication token not found");
+        return; // Exit early if no token
+      }
+
+      const response = await fetch(`${BASE_URL}/api/jobs/admin`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${parsedToken}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Received data:", data); // Add debugging to see what's returned
+        // Render jobs
+        renderJobs(data.data.jobs || []);
+        // Render statistics
+        renderStatistics(data.data.statistics || {});
+      } else {
+        toastr.error(data.message || "Failed to fetch jobs");
+      }
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+      toastr.error("Failed to connect to the server");
     }
-
-    const response = await fetch(`${BASE_URL}/api/jobs/admin`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${parsedToken}`,
-      },
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      renderJobs(data.data.jobs || []);
-    } else {
-      toastr.error(data.message || "Failed to fetch jobs");
-    }
-  } catch (error) {
-    console.error("Error fetching jobs:", error);
-    toastr.error("Failed to connect to the server");
   }
-}
-
 
   function renderJobs(jobs) {
     const tableBody = document.querySelector(".table-container table tbody");
@@ -110,6 +113,33 @@ async function fetchAndRenderJobs() {
     });
 
     addTableIconEventListeners();
+  }
+
+  function renderStatistics(statistics) {
+    console.log("Rendering statistics:", statistics); // Add debugging
+
+    // Find elements with appropriate classes and update their content
+    const totalJobsElement = document.querySelector(".total-jobs");
+    if (totalJobsElement) {
+      totalJobsElement.textContent = statistics.totalNumberOfJobs || 0;
+    } else {
+      console.error("Could not find .total-jobs element");
+    }
+
+    const approvedJobsElement = document.querySelector(".approved-jobs");
+    if (approvedJobsElement) {
+      approvedJobsElement.textContent =
+        statistics.totalNumberOfApprovedJobs || 0;
+    } else {
+      console.error("Could not find .approved-jobs element");
+    }
+
+    const pendingJobsElement = document.querySelector(".pending-jobs");
+    if (pendingJobsElement) {
+      pendingJobsElement.textContent = statistics.totalNumberOfPendingJobs || 0;
+    } else {
+      console.error("Could not find .pending-jobs element");
+    }
   }
 
   function addJobToTable(job) {
@@ -184,6 +214,8 @@ async function fetchAndRenderJobs() {
       if (response.ok) {
         toastr.success(data.message || "Job created successfully");
         document.getElementById("modal-create-job")?.classList.add("hidden");
+        // After creating a job, refresh all data including statistics
+        fetchAndRenderJobs();
         return data.data;
       } else {
         toastr.error(data.message || "Failed to create job");
@@ -285,13 +317,8 @@ async function fetchAndRenderJobs() {
         if (jobRow) {
           jobRow.remove();
         }
-        // Refresh if table is now empty
-        const tableBody = document.querySelector(
-          ".table-container table tbody"
-        );
-        if (tableBody && tableBody.children.length === 0) {
-          fetchAndRenderJobs();
-        }
+        // Refresh statistics after deletion
+        fetchAndRenderJobs();
       } else {
         toastr.error(data.message || "Failed to delete job");
       }

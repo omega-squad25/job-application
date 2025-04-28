@@ -9,18 +9,19 @@ block content
   div.contents
     div.card-container
       include ../../components/admin-card
-      +adminCard('/assets/images/admin-card3.svg', 'Total Number of Jobs', '15')
-      +adminCard('/assets/images/admin-card2.svg', 'Total Approved Jobs', '10')
-      +adminCard('/assets/images/admin-card1.svg', 'Total Pending Jobs', '5')
-
-    div.table-container 
-      div.table-header  
-        p.table-title Jobs 
+      - var statsData = statistics || {}
+      +adminCard('/assets/images/admin-card3.svg', 'Total Number of Jobs', statsData.totalNumberOfJobs || 0, 'total-jobs')
+      +adminCard('/assets/images/admin-card2.svg', 'Total Approved Jobs', statsData.totalNumberOfApprovedJobs || 0, 'approved-jobs')
+      +adminCard('/assets/images/admin-card1.svg', 'Total Pending Jobs', statsData.totalNumberOfPendingJobs || 0, 'pending-jobs')
+    
+    div.table-container
+      div.table-header
+        p.table-title Jobs
         div.create-job.modal-trigger(data-target='#modal-create-job', style='cursor: pointer;')
           button.btn.modal-trigger(data-target='#modal-create-job', style='cursor: pointer;')
             i.fa-solid.fa-plus
             p Create Job
-
+      
       // Table
       include ../../components/table
       - var jobsData = jobs || []
@@ -37,7 +38,7 @@ block content
           ];
         })
       )
-
+    
     // Modal for creating a job
     div#modal-create-job.modal-overlay.hidden
       div.modal
