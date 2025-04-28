@@ -12,21 +12,27 @@ document.addEventListener("DOMContentLoaded", function () {
     extendedTimeOut: "1000",
   };
 
+  // Initialize jobs table only once at page load
   fetchAndRenderJobs();
 
   const createJobForm = document.getElementById("create-job-form");
 
   if (createJobForm) {
-    createJobForm.addEventListener("submit", async function (event) {
+    // Remove any existing event listeners to prevent duplicates
+    const clonedForm = createJobForm.cloneNode(true);
+    createJobForm.parentNode.replaceChild(clonedForm, createJobForm);
+
+    // Add event listener to the new cloned form
+    clonedForm.addEventListener("submit", async function (event) {
       event.preventDefault();
 
-      const submitButton = createJobForm.querySelector("button[type='submit']");
+      const submitButton = clonedForm.querySelector("button[type='submit']");
       submitButton.disabled = true;
       submitButton.innerText = "Processing...";
 
       const title = document.getElementById("title")?.value.trim();
       const company = document.getElementById("company")?.value.trim();
-      const location = document.getElementById("gps")?.value.trim(); // Note: ID is "gps", not "location"
+      const location = document.getElementById("gps")?.value.trim();
       const description = document.getElementById("description")?.value.trim();
 
       if (!title || !company || !location || !description) {
@@ -39,12 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const jobData = { title, company, location, description };
 
       try {
-        const newJob = await createJob(jobData);
-        if (newJob) {
-          addJobToTable(newJob);
-          addTableIconEventListeners();
-          createJobForm.reset();
-        }
+        await createJob(jobData);
+        clonedForm.reset();
       } catch (error) {
         console.error("Error:", error);
       }
@@ -61,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!parsedToken) {
         toastr.error("Authentication token not found");
-        return; // Exit early if no token
+        return;
       }
 
       const response = await fetch(`${BASE_URL}/api/jobs/admin`, {
@@ -75,10 +77,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Received data:", data); // Add debugging to see what's returned
-        // Render jobs
+        console.log("Received data:", data);
         renderJobs(data.data.jobs || []);
-        // Render statistics
         renderStatistics(data.data.statistics || {});
       } else {
         toastr.error(data.message || "Failed to fetch jobs");
@@ -93,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const tableBody = document.querySelector(".table-container table tbody");
     if (!tableBody) return;
 
+    // Clear the entire table first
     tableBody.innerHTML = "";
 
     if (jobs.length === 0) {
@@ -108,37 +109,31 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    // Add jobs one by one
     jobs.forEach((job) => {
       addJobToTable(job);
     });
 
+    // Add event listeners to icons
     addTableIconEventListeners();
   }
 
   function renderStatistics(statistics) {
-    console.log("Rendering statistics:", statistics); // Add debugging
-
     // Find elements with appropriate classes and update their content
     const totalJobsElement = document.querySelector(".total-jobs");
     if (totalJobsElement) {
       totalJobsElement.textContent = statistics.totalNumberOfJobs || 0;
-    } else {
-      console.error("Could not find .total-jobs element");
     }
 
     const approvedJobsElement = document.querySelector(".approved-jobs");
     if (approvedJobsElement) {
       approvedJobsElement.textContent =
         statistics.totalNumberOfApprovedJobs || 0;
-    } else {
-      console.error("Could not find .approved-jobs element");
     }
 
     const pendingJobsElement = document.querySelector(".pending-jobs");
     if (pendingJobsElement) {
       pendingJobsElement.textContent = statistics.totalNumberOfPendingJobs || 0;
-    } else {
-      console.error("Could not find .pending-jobs element");
     }
   }
 
@@ -151,14 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
       tableBody.innerHTML = "";
     }
 
-    const existingJobs = [...tableBody.querySelectorAll("tr")];
-    const jobExists = existingJobs.some((row) => {
-      const idElem = row.querySelector(".action-icon");
-      return idElem && idElem.getAttribute("data-id") === job.id;
-    });
-
-    if (jobExists) return;
-
+    // Don't check for duplicates since we already cleared the table in renderJobs
     const newRow = document.createElement("tr");
     newRow.innerHTML = `
       <td>${job.title || ""}</td>
@@ -214,7 +202,8 @@ document.addEventListener("DOMContentLoaded", function () {
       if (response.ok) {
         toastr.success(data.message || "Job created successfully");
         document.getElementById("modal-create-job")?.classList.add("hidden");
-        // After creating a job, refresh all data including statistics
+
+        // Fetch all jobs again to update the table (this will clear and rebuild the entire table)
         fetchAndRenderJobs();
         return data.data;
       } else {
@@ -229,38 +218,38 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function addTableIconEventListeners() {
+    // First remove all existing event listeners
+    document
+      .querySelectorAll(".view-icon, .edit-icon, .delete-icon")
+      .forEach((icon) => {
+        const newIcon = icon.cloneNode(true);
+        icon.parentNode.replaceChild(newIcon, icon);
+      });
+
+    // Then add fresh event listeners
     document.querySelectorAll(".view-icon").forEach((icon) => {
-      icon.removeEventListener("click", viewHandler);
-      icon.addEventListener("click", viewHandler);
+      icon.addEventListener("click", function (event) {
+        event.preventDefault();
+        const jobId = this.getAttribute("data-id");
+        openViewModal(jobId);
+      });
     });
 
     document.querySelectorAll(".edit-icon").forEach((icon) => {
-      icon.removeEventListener("click", editHandler);
-      icon.addEventListener("click", editHandler);
+      icon.addEventListener("click", function (event) {
+        event.preventDefault();
+        const jobId = this.getAttribute("data-id");
+        openEditModal(jobId);
+      });
     });
 
     document.querySelectorAll(".delete-icon").forEach((icon) => {
-      icon.removeEventListener("click", deleteHandler);
-      icon.addEventListener("click", deleteHandler);
+      icon.addEventListener("click", function (event) {
+        event.preventDefault();
+        const jobId = this.getAttribute("data-id");
+        openDeleteModal(jobId);
+      });
     });
-  }
-
-  function viewHandler(event) {
-    event.preventDefault();
-    const jobId = this.getAttribute("data-id");
-    openViewModal(jobId);
-  }
-
-  function editHandler(event) {
-    event.preventDefault();
-    const jobId = this.getAttribute("data-id");
-    openEditModal(jobId);
-  }
-
-  function deleteHandler(event) {
-    event.preventDefault();
-    const jobId = this.getAttribute("data-id");
-    openDeleteModal(jobId);
   }
 
   async function openViewModal(jobId) {
@@ -284,7 +273,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function openDeleteModal(jobId) {
     if (confirm("Are you sure you want to delete this job?")) {
       console.log("Delete job:", jobId);
-      // Implement deletion logic here
       deleteJob(jobId);
     }
   }
@@ -308,14 +296,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (response.status === 204 || response.ok) {
         toastr.success("Job deleted successfully");
-        // Remove the job from the table
-        const jobRow = document
-          .querySelector(`.delete-icon[data-id="${jobId}"]`)
-          ?.closest("tr");
-        if (jobRow) {
-          jobRow.remove();
-        }
-        // Refresh statistics after deletion
+
+        // Fetch all jobs again to update the table
         fetchAndRenderJobs();
       } else {
         // Try to parse error message if there is content
