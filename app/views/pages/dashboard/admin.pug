@@ -63,6 +63,32 @@ block content
               button.modal-close-btn(type='button') Cancel
               button.modal-save-btn(type='submit') Save
 
+
+    // Modal for editing a job
+    div#modal-edit.modal-overlay.hidden
+      div.modal
+        div.modal-header
+          h2.modal-title Edit Job
+          span.modal-close &times;
+        div.modal-body
+          form#edit-job-form
+            input(type='hidden', name='jobId', id='edit-job-id')
+            div.form-group
+              label(for='edit-title') Job Title
+              input(type='text', name='title', id='edit-title', placeholder='Data Analyst', required)
+            div.form-group
+              label(for='edit-company') Company Name
+              input(type='text', name='company', id='edit-company', placeholder='Google', required)
+            div.form-group
+              label(for='edit-gps') Location
+              input(type='text', name='gps', id='edit-gps', placeholder='London, UK', required)
+            div.form-group
+              label(for='edit-description') Job Description
+              textarea(name='description', id='edit-description', placeholder='Job Description', required)
+            div.modal-footer
+              button.modal-close-btn(type='button') Cancel
+              button.modal-save-btn(type='submit') Update 
+
 block styles
   link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css')
   link(rel='stylesheet', href='/css/admin.css')

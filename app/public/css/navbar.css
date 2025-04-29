@@ -66,3 +66,9 @@
 .signup-btn img {
   height: 16px;
 }
+
+.auth-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}

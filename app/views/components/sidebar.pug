@@ -1,22 +1,14 @@
 div.sidebar
-  ul.sidebar-menu#sidebarMenu
+  div.sidebar-contents
+    ul.sidebar-menu#sidebarMenu
       li: a.link(href='/dashboard/admin', class=currentPage === 'admin' ? 'active' : '') Admin
       li: a.link(href='/dashboard/user', class=currentPage === 'user' ? 'active' : '') User
+    button.logout-btn(type='button')
+      span Logout
+      i.fa-solid.fa-right-from-bracket
 
 block styles
   link(rel='stylesheet', href='/css/sidebar.css')
 
 block scripts
-  script(src='/js/sidebar.js')  
-
-
-//- div.sidebar
-//-   ul.sidebar-menu#sidebarMenu
-//-     //- The menu items will be dynamically populated by JavaScript
-//-     //- based on the user's isAdmin status
-
-//- block styles
-//-   link(rel='stylesheet', href='/css/sidebar.css')
-
-//- block scripts
-//-   script(src='/js/sidebar.js')
+  script(src='/js/sidebar.js')

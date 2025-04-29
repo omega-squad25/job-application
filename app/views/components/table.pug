@@ -34,29 +34,3 @@ div#modal-view.modal-overlay.hidden
       p View content here.
     div.modal-footer
       button.modal-close-btn Cancel
-
-div#modal-edit.modal-overlay.hidden
-  div.modal
-    div.modal-header
-      h2.modal-title Edit Job
-      span.modal-close &times;
-    div.modal-body
-      form
-        div.form-group
-          label(for='job-title') Job Title
-          input#job-title(type='text', name='job-title', placeholder='Data Analyst', required)
-        div.form-group
-          label(for='company-name') Company Name
-          input#company-name(type='text', name='company-name', placeholder='Google', required)
-        div.form-group
-          label(for='job-type') Job Type
-          input#job-type(type='text', name='job-type', placeholder='Remote', required)
-        div.form-group
-          label(for='location') Location
-          input#location(type='text', name='location', placeholder='London, UK', required)
-        div.form-group
-          label(for='job-description') Job Description
-          textarea#job-description(name='job-description', placeholder='Job Description', required)
-    div.modal-footer
-      button.modal-close-btn Cancel
-      button.modal-save-btn Save

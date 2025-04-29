@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const sidebarMenu = document.getElementById("sidebarMenu");
+  const logoutButton = document.querySelector(".logout-btn");
 
   // Retrieve the user object from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
@@ -34,4 +35,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }">User</a>`;
     sidebarMenu.appendChild(userMenuItem);
   }
+
+  // Logout functionality
+  logoutButton.addEventListener("click", function (event) {
+    event.preventDefault(); // Just in case
+    event.stopPropagation(); // Important to stop bubbling
+    console.log("Logout button clicked");
+
+    // Remove token and user data from localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // Redirect to the homepage
+    window.location.href = "/";
+  });
 });
