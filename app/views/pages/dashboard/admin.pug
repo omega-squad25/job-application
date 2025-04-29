@@ -3,29 +3,43 @@ extends ../../layouts/dashboard-layout
 block content
   - var currentPage = 'admin'
 
-  // Include the sidebar component and pass the currentPage variable
+  // Sidebar
   include ../../components/sidebar
 
   div.contents
     div.card-container
-      // Include the card component and pass props
       include ../../components/admin-card
-      +adminCard('/assets/images/admin-card3.svg', 'Total Number of Jobs', '15')
-      +adminCard('/assets/images/admin-card2.svg', 'Total Approved Jobs', '10')
-      +adminCard('/assets/images/admin-card1.svg', 'Total Pending Jobs', '5')
-    div.table-container 
-      div.table-header  
-        p.table-title Jobs 
+      - var statsData = statistics || {}
+      +adminCard('/assets/images/admin-card3.svg', 'Total Number of Jobs', statsData.totalNumberOfJobs || 0, 'total-jobs')
+      +adminCard('/assets/images/admin-card2.svg', 'Total Approved Jobs', statsData.totalNumberOfApprovedJobs || 0, 'approved-jobs')
+      +adminCard('/assets/images/admin-card1.svg', 'Total Pending Jobs', statsData.totalNumberOfPendingJobs || 0, 'pending-jobs')
+    
+    div.table-container
+      div.table-header
+        p.table-title Jobs
         div.create-job.modal-trigger(data-target='#modal-create-job', style='cursor: pointer;')
           button.btn.modal-trigger(data-target='#modal-create-job', style='cursor: pointer;')
             i.fa-solid.fa-plus
             p Create Job
-
-      // Include the table component and pass the title, headers, and rows
+      
+      // Table
       include ../../components/table
-      +table(['Job Title', 'Company', 'Date Posted', 'Location', 'Status', 'Action' ], [])
-
-    // Include the modal component for create job
+      - var jobsData = jobs || []
+      +table(
+        ['Job Title', 'Company', 'Date Posted', 'Location', 'Status', 'Action'], 
+        jobsData.map(function(job) {
+          return [
+            job.title, 
+            job.company, 
+            new Date(job.createdAt).toLocaleDateString(), 
+            job.location, 
+            job.status || 'Pending', 
+            { id: job.id }
+          ];
+        })
+      )
+    
+    // Modal for creating a job
     div#modal-create-job.modal-overlay.hidden
       div.modal
         div.modal-header
@@ -40,14 +54,58 @@ block content
               label(for='company') Company Name
               input(type='text', name='company', id='company', placeholder='Google', required)
             div.form-group
-              label(for='location') Location
-              input(type='text', name='location', id='gps', placeholder='London, UK', required)
+              label(for='gps') Location
+              input(type='text', name='gps', id='gps', placeholder='London, UK', required)
             div.form-group
               label(for='description') Job Description
               textarea(name='description', id='description', placeholder='Job Description', required)
             div.modal-footer
-              button.modal-close-btn Cancel
+              button.modal-close-btn(type='button') Cancel
               button.modal-save-btn(type='submit') Save
+
+
+    // Modal for editing a job
+    div#modal-edit.modal-overlay.hidden
+      div.modal
+        div.modal-header
+          h2.modal-title Edit Job
+          span.modal-close &times;
+        div.modal-body
+          form#edit-job-form
+            input(type='hidden', name='jobId', id='edit-job-id')
+            div.form-group
+              label(for='edit-title') Job Title
+              input(type='text', name='title', id='edit-title', placeholder='Data Analyst', required)
+            div.form-group
+              label(for='edit-company') Company Name
+              input(type='text', name='company', id='edit-company', placeholder='Google', required)
+            div.form-group
+              label(for='edit-gps') Location
+              input(type='text', name='gps', id='edit-gps', placeholder='London, UK', required)
+            div.form-group
+              label(for='edit-description') Job Description
+              textarea(name='description', id='edit-description', placeholder='Job Description', required)
+            div.modal-footer
+              button.modal-close-btn(type='button') Cancel
+              button.modal-save-btn(type='submit') Update 
+
+
+    // Modal for viewing job details
+    div#modal-view.modal-overlay.hidden
+      div.modal
+        div.modal-header
+          h2.modal-title Job Details
+          span.modal-close &times;
+        div.modal-body
+          div#job-details
+            h3 title.
+            p description.
+            p location.
+            p company.
+            p createdAt.
+            p status.
+            div.modal-footer
+              button.modal-close-btn Cancel  
 
 
 block styles
@@ -55,7 +113,6 @@ block styles
   link(rel='stylesheet', href='/css/admin.css')
   link(rel='stylesheet', href='/css/modal.css')
   link(rel='stylesheet', href='/css/global-styles.css')
-
 
 block scripts
   script(src="https://code.jquery.com/jquery-3.6.0.min.js")

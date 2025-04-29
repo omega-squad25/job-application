@@ -12,6 +12,13 @@
   margin-top: 60px;
 }
 
+.sidebar-contents {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
 .sidebar-menu {
   list-style-type: none;
   padding: 0;
@@ -45,4 +52,20 @@
   .sidebar-menu li {
     font-size: 18px;
   }
+}
+
+
+.logout-btn {
+  background-color: #007aff;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  margin-bottom: 4rem;
+  width: fit-content;
+  cursor: pointer;
+
 }

@@ -1,10 +1,10 @@
-import { DataTypes } from "sequelize";
-import { v4 as uuidv4 } from "uuid";
-import sequelize from "../services/db.js";
-import User from "./User.js";
+import { DataTypes } from 'sequelize';
+import { v4 as uuidv4 } from 'uuid';
+import sequelize from '../services/db.js';
+import User from './User.js';
 
 const Profile = sequelize.define(
- "Profile",
+ 'Profile',
  {
   id: {
    type: DataTypes.UUID,
@@ -17,7 +17,7 @@ const Profile = sequelize.define(
    unique: true,
    references: {
     model: User,
-    key: "id",
+    key: 'id',
    },
   },
   fullName: {
@@ -34,13 +34,9 @@ const Profile = sequelize.define(
   },
  },
  {
-  tableName: "Profiles",
+  tableName: 'Profiles',
   timestamps: true,
  }
 );
-
-// Relationship
-User.hasOne(Profile, { foreignKey: "userId" });
-Profile.belongsTo(User, { foreignKey: "userId" });
 
 export default Profile;

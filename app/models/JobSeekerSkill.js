@@ -1,39 +1,33 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../services/db.js";
-import JobSeekerDetail from "./jobSeekerDetail.js";
-import Skill from "./Skill.js";
-
+import { DataTypes } from 'sequelize';
+import sequelize from '../services/db.js';
+import JobSeekerDetail from './JobSeekerDetails.js';
+import Skill from './Skills.js';
 const JobSeekerSkill = sequelize.define(
- "JobSeekerSkill",
+ 'JobSeekerSkill',
  {
   jobSeekerDetailId: {
    type: DataTypes.UUID,
+   allowNull: false,
    primaryKey: true,
-   references: { model: JobSeekerDetail, key: "id" },
+   references: {
+    model: JobSeekerDetail,
+    key: 'id',
+   },
   },
   skillId: {
    type: DataTypes.UUID,
-
-   references: { model: Skill, key: "id" },
-  },
-  yearsOfExperience: {
-   type: DataTypes.INTEGER,
-   allowNull: true,
+   allowNull: false,
+   primaryKey: true,
+   references: {
+    model: Skill,
+    key: 'id',
+   },
   },
  },
  {
-  tableName: "JobSeekerSkills",
+  tableName: 'JobSeekerSkills',
   timestamps: false,
  }
 );
-
-JobSeekerDetail.belongsToMany(Skill, {
- through: JobSeekerSkill,
- foreignKey: "jobSeekerDetailId",
-});
-Skill.belongsToMany(JobSeekerDetail, {
- through: JobSeekerSkill,
- foreignKey: "skillId",
-});
 
 export default JobSeekerSkill;

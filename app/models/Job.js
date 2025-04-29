@@ -1,10 +1,10 @@
-import { v4 as uuidv4 } from "uuid";
-import { DataTypes } from "sequelize";
-import sequelize from "../services/db.js";
-import User from "./User.js";
+import { v4 as uuidv4 } from 'uuid';
+import { DataTypes } from 'sequelize';
+import sequelize from '../services/db.js';
+import User from './User.js';
 
 const Job = sequelize.define(
- "Job",
+ 'Job',
  {
   id: {
    type: DataTypes.UUID,
@@ -13,11 +13,19 @@ const Job = sequelize.define(
   },
   title: {
    type: DataTypes.STRING(255),
-   allowNull: false, // e.g., "Product Designer"
+   allowNull: false,
   },
   description: {
    type: DataTypes.TEXT,
-   allowNull: false, // Detailed job description
+   allowNull: false,
+  },
+  requirements: {
+   type: DataTypes.TEXT,
+   allowNull: true,
+  },
+  benefitsPayRange: {
+   type: DataTypes.TEXT,
+   allowNull: true,
   },
   company: {
    type: DataTypes.STRING(255),
@@ -28,27 +36,25 @@ const Job = sequelize.define(
    allowNull: false,
   },
   status: {
-   type: DataTypes.ENUM("draft", "approved", "closed"),
+   type: DataTypes.ENUM('draft', 'pending', 'approved', 'closed'),
    allowNull: false,
-   defaultValue: "draft",
+   defaultValue: 'pending',
   },
+  approvedAt: { type: DataTypes.DATE, allowNull: true },
+
   createdBy: {
    type: DataTypes.UUID,
    allowNull: false,
    references: {
     model: User,
-    key: "id",
+    key: 'id',
    },
   },
  },
  {
-  tableName: "Jobs",
+  tableName: 'Jobs',
   timestamps: true,
  }
 );
-
-// Relationships
-User.hasMany(Job, { foreignKey: "createdBy" });
-Job.belongsTo(User, { foreignKey: "createdBy" });
 
 export default Job;

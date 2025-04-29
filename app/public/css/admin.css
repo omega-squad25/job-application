@@ -106,15 +106,39 @@
   background-color: #f9f9f9;
 }
 
-.view-icon, .edit-icon {
+.view-icon,
+.edit-icon,
+.status-icon {
   font-size: 1rem;
   color: #4d4c4c;
   cursor: pointer;
-  padding-right: 12px;
+  padding-right: 10px;
 }
 
 .delete-icon {
   font-size: 1rem;
   color: #c82b2b;
   cursor: pointer;
+}
+
+.status-text {
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border-radius: 40px;
+  background-color: #fad6d6;
+}
+
+
+.approve-text {
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border-radius: 40px;
+  background-color: #baecd3;
+}
+
+
+#job-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }

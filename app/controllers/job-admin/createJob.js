@@ -1,8 +1,8 @@
-import dotenv from "dotenv";
-import sequelize from "../services/db.js";
-import Job from "../models/Job.js";
+import dotenv from 'dotenv';
+import sequelize from '../../services/db.js';
+import Job from '../../models/Job.js';
 dotenv.config();
-import Joi from "joi";
+import Joi from 'joi';
 
 const jobSchema = Joi.object({
  title: Joi.string().required(),
@@ -13,14 +13,13 @@ const jobSchema = Joi.object({
 
 const createJobController = {
  createJob: async (req, res) => {
-  // Ensure req.user is set by authenticateToken middleware
   if (!req.user) {
-   return res.status(401).json({ message: "User not authenticated" });
+   return res.status(401).json({ message: 'User not authenticated' });
   }
 
   // Check if the user has the admin role
-  if (req.user.role !== "admin") {
-   return res.status(403).json({ message: "Admin access required" });
+  if (req.user.role !== 'admin') {
+   return res.status(403).json({ message: 'Admin access required' });
   }
 
   // Validate request body
@@ -50,17 +49,14 @@ const createJobController = {
    });
 
    res.status(201).json({
-    message: "Job created successfully",
-    job: {
-     id: job.id,
-     title: job.title,
-    },
+    message: 'Job created successfully',
+    job,
    });
   } catch (error) {
    console.error(error);
    res
     .status(500)
-    .json({ message: "Error creating job", error: error.message });
+    .json({ message: 'Error creating job', error: error.message });
   }
  },
 };

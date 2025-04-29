@@ -6,57 +6,24 @@ mixin table(headers, rows)
           each header in headers
             th #{header}
       tbody
-        each row in rows
+        if rows && rows.length > 0
+          each row in rows
+            tr
+              each cell, index in row
+                if headers[index] === 'Action' && cell && cell.id
+                  td
+                    a.action-icon.view-icon(href='#', title='View', data-id=cell.id) 
+                      i.fa.fa-eye
+                    a.action-icon.edit-icon(href='#', title='Edit', data-id=cell.id)
+                      i.fa.fa-edit
+                    a.action-icon.status-icon(href='#', title='Status', data-id=cell.id)
+                      i.fa.fa-circle-check
+                    a.action-icon.delete-icon(href='#', title='Delete', data-id=cell.id)
+                      i.fa.fa-trash
+                else
+                  td #{cell || ''}
+        else
           tr
-            each cell, index in row
-              if headers[index] === 'Action'
-                td
-                  a.action-icon.view-icon(href='#', title='View')
-                    i.fa.fa-eye
-                  a.action-icon.edit-icon(href='#', title='Edit')
-                    i.fa.fa-edit
-                  a.action-icon.delete-icon(href='#', title='Delete')
-                    i.fa.fa-trash
-              else
-                td #{cell}
+            td(colspan=headers.length) No data availablee
 
-  // Modals
-  div#modal-view.modal-overlay.hidden
-    div.modal
-      div.modal-header
-        h2.modal-title Job Details
-        span.modal-close &times;
-      div.modal-body
-        p View content here.
-      div.modal-footer
-        button.modal-close-btn Cancel
 
-  div#modal-edit.modal-overlay.hidden
-    div.modal
-      div.modal-header
-        h2.modal-title Edit Job
-        span.modal-close &times;
-      div.modal-body
-        form
-            div.form-group
-              label(for='job-title') Job Title
-              input#job-title(type='text', name='job-title', placeholder='Data Analyst', required)
-            div.form-group
-              label(for='company-name') Company Name
-              input#company-name(type='text', name='company-name', placeholder='Google', required)
-            div.form-group
-              label(for='job-type') Job Type
-              input#job-type(type='text', name='job-type', placeholder='Remote', required)
-            div.form-group
-              label(for='location') Location
-              input#location(type='text', name='location', placeholder='London, UK', required)
-            div.form-group
-              label(for='job-description') Job Description
-              textarea#job-description(name='job-description', placeholder='Job Description', required)
-      div.modal-footer
-        button.modal-close-btn Cancel
-        button.modal-save-btn Save
-
-block styles
-  link(rel='stylesheet', href='/css/admin.css')
-  link(rel='stylesheet', href='/css/modal.css')

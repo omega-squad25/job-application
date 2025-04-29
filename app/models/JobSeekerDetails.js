@@ -1,10 +1,10 @@
-import { DataTypes } from "sequelize";
-import { v4 as uuidv4 } from "uuid";
-import sequelize from "../services/db.js";
-import User from "./User.js";
-
+import { DataTypes } from 'sequelize';
+import { v4 as uuidv4 } from 'uuid';
+import sequelize from '../services/db.js';
+import User from './User.js';
+import Profile from './Profile.js';
 const JobSeekerDetail = sequelize.define(
- "JobSeeker",
+ 'JobSeekerDetail',
  {
   id: {
    type: DataTypes.UUID,
@@ -13,12 +13,21 @@ const JobSeekerDetail = sequelize.define(
    defaultValue: () => uuidv4(),
   },
   userId: {
-   type: DataTypes.INTEGER,
+   type: DataTypes.UUID,
    allowNull: false,
    unique: true,
    references: {
     model: User,
-    key: "id",
+    key: 'id',
+   },
+  },
+  profileId: {
+   type: DataTypes.UUID,
+   allowNull: false,
+   unique: true,
+   references: {
+    model: Profile,
+    key: 'id',
    },
   },
   fullName: {
@@ -29,14 +38,36 @@ const JobSeekerDetail = sequelize.define(
   resume: {
    type: DataTypes.STRING(255), // Path/URL to uploaded resume
   },
+  phone: {
+   type: DataTypes.STRING(20),
+   allowNull: true,
+  },
+  // Add these new fields for file uploads
+  resumePath: {
+   type: DataTypes.STRING(255),
+   allowNull: true,
+  },
+  resumeFilename: {
+   type: DataTypes.STRING(255),
+   allowNull: true,
+  },
+  additionalFilePath: {
+   type: DataTypes.STRING(255),
+   allowNull: true,
+  },
+  additionalFilename: {
+   type: DataTypes.STRING(255),
+   allowNull: true,
+  },
+  coverLetter: {
+   type: DataTypes.TEXT,
+   allowNull: true,
+  },
  },
  {
-  tableName: "JobSeekerDetails",
+  tableName: 'JobSeekerDetails',
   timestamps: false,
  }
 );
 
-User.hasOne(JobSeekerDetail, { foreignKey: "userId" });
-JobSeekerDetail.belongsTo(User, { foreignKey: "userId" });
-
-export default JobSeeker;
+export default JobSeekerDetail;
