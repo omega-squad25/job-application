@@ -211,9 +211,9 @@ document.addEventListener("DOMContentLoaded", function () {
         job.createdAt ? new Date(job.createdAt).toLocaleDateString() : ""
       }</td>
       <td>${job.location || ""}</td>
-      <td><span class=${job.status === "pending" ? "status-text" : 'approve-text'}>${
-      job.status || "pending"
-    }</span>
+      <td><span class=${
+        job.status === "pending" ? "status-text" : "approve-text"
+      }>${job.status || "pending"}</span>
       </td>
       <td>
         <a class="action-icon view-icon" href="#" title="View" data-id="${
@@ -374,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function addTableIconEventListeners() {
     // First remove all existing event listeners
     document
-      .querySelectorAll(".view-icon, .edit-icon, .delete-icon")
+      .querySelectorAll(".view-icon, .edit-icon, .delete-icon, .status-icon")
       .forEach((icon) => {
         const newIcon = icon.cloneNode(true);
         icon.parentNode.replaceChild(newIcon, icon);
@@ -416,9 +416,112 @@ document.addEventListener("DOMContentLoaded", function () {
   async function openViewModal(jobId) {
     console.log("View job:", jobId);
     const modal = document.getElementById("modal-view");
+
     if (modal) {
-      // Here you would typically fetch job details and populate the modal
+      // Show loading state
       modal.classList.remove("hidden");
+      const jobContents = document.getElementById("job-details");
+
+      // Set a loading message
+      if (jobContents) {
+        jobContents.innerHTML =
+          '<div class="loading-message">Loading job details...</div>';
+      }
+
+      try {
+        // Fetch job details using the getJobDetails function
+        const jobDetails = await getJobDetails(jobId);
+
+        if (jobDetails) {
+          console.log("Retrieved job details:", jobDetails);
+
+          // Define the escapeHtml function
+          const escapeHtml = (str) => {
+            if (!str) return "";
+            return String(str)
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+          };
+
+          // Extract job details with default empty strings if properties don't exist
+          const title = jobDetails.title || "";
+          const description = jobDetails.description || "";
+          const location =
+            jobDetails.location || jobDetails.gps || jobDetails.address || "";
+          const company = jobDetails.company || "";
+          const createdAt = jobDetails.createdAt
+            ? new Date(jobDetails.createdAt).toLocaleDateString()
+            : "Unknown";
+          const status = jobDetails.status || "Approved";
+
+          // Populate the modal with job details
+          jobContents.innerHTML = `
+            <h3>${escapeHtml(title)}</h3>
+            <p><strong>Company name: </strong> ${escapeHtml(company)}</p>
+            <p><strong>Location: </strong> ${escapeHtml(location)}</p>
+            <p><strong>Date Posted: </strong> ${escapeHtml(createdAt)}</p>
+            <p><strong>Status: </strong> ${escapeHtml(status)}</p>
+            <div class="description-container">
+              <p><strong>Description:</strong></p>
+              <p>${escapeHtml(description)}</p>
+            </div>
+            <div class="modal-footer">
+              <button class="modal-close-btn">Close</button>
+            </div>
+          `;
+
+          // Add event listener to the close button
+          const closeBtn = jobContents.querySelector(".modal-close-btn");
+          if (closeBtn) {
+            closeBtn.addEventListener("click", function () {
+              modal.classList.add("hidden");
+            });
+          }
+        } else {
+          // No job details found, show error
+          jobContents.innerHTML = `
+            <div class="error-message">
+              <p>Could not load job details. The job may have been deleted.</p>
+            </div>
+            <div class="modal-footer">
+              <button class="modal-close-btn">Close</button>
+            </div>
+          `;
+
+          // Add event listener to the close button
+          const closeBtn = jobContents.querySelector(".modal-close-btn");
+          if (closeBtn) {
+            closeBtn.addEventListener("click", function () {
+              modal.classList.add("hidden");
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error in openViewModal:", error);
+
+        // Show error message in modal
+        if (jobContents) {
+          jobContents.innerHTML = `
+            <div class="error-message">
+              <p>An error occurred while fetching job details.</p>
+            </div>
+            <div class="modal-footer">
+              <button class="modal-close-btn">Close</button>
+            </div>
+          `;
+
+          // Add event listener to the close button
+          const closeBtn = jobContents.querySelector(".modal-close-btn");
+          if (closeBtn) {
+            closeBtn.addEventListener("click", function () {
+              modal.classList.add("hidden");
+            });
+          }
+        }
+      }
     }
   }
 

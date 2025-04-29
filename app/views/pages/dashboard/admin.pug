@@ -89,6 +89,25 @@ block content
               button.modal-close-btn(type='button') Cancel
               button.modal-save-btn(type='submit') Update 
 
+
+    // Modal for viewing job details
+    div#modal-view.modal-overlay.hidden
+      div.modal
+        div.modal-header
+          h2.modal-title Job Details
+          span.modal-close &times;
+        div.modal-body
+          div#job-details
+            h3 title.
+            p description.
+            p location.
+            p company.
+            p createdAt.
+            p status.
+            div.modal-footer
+              button.modal-close-btn Cancel  
+
+
 block styles
   link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css')
   link(rel='stylesheet', href='/css/admin.css')
