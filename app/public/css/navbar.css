@@ -72,3 +72,20 @@
   align-items: center;
   gap: 30px;
 }
+
+.hidden {
+  display: none !important;
+}
+
+.auth-section {
+  display: flex;
+  align-items: center;
+}
+
+.user-profile li {
+  margin-left: 15px;
+}
+
+.logout-btn {
+  color: #ff5555;
+}

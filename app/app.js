@@ -1,7 +1,15 @@
 // Import express.js
 import express from "express";
+import { sequelize } from "./models/index.js";
 import authRoutes from "./routes/auth.js";
 import jobRoutes from "./routes/jobs.js";
+import profileRoutes from "./routes/profile.js";
+import skillRoutes from "./routes/skill.js";
+import educationRoutes from "./routes/education.js";
+import experienceRoutes from "./routes/experience.js";
+import savedJobsRoutes from "./routes/savedJobs.js";
+import applicationsRoutes from "./routes/applications.js";
+import uploadFileRoutes from "./routes/upload-file.js";
 import cors from "cors";
 
 
@@ -25,6 +33,13 @@ app.use((req, res, next) => {
 //add API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/skills", skillRoutes);
+app.use("/api/education", educationRoutes);
+app.use("/api/experience", experienceRoutes);
+app.use("/api/save-job", savedJobsRoutes);
+app.use("/api/applications", applicationsRoutes);
+app.use("/api/uploads", uploadFileRoutes);
 
 // Use the Pug templating engine
 app.set("view engine", "pug");
@@ -54,7 +69,6 @@ app.get("/dashboard/admin", function (req, res) {
 });
 
 
-
 // Create a route for the jobs page
 app.get("/jobs", function (req, res) {
   res.render("pages/jobs", { title: "GoHire Jobs page" });
@@ -81,7 +95,30 @@ app.get("/hello/:name", function (req, res) {
   res.send("Hello " + req.params.name);
 });
 
-// Start server on port 3000
-app.listen(3000, function () {
-  console.log(`Server running at http://127.0.0.1:3000/`);
-});
+// // Start server on port 3000
+// app.listen(3000, function () {
+//   console.log(`Server running at http://127.0.0.1:3000/`);
+// });
+const initDB = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Database connection established successfully.");
+    // Sync all models
+    await sequelize.sync();
+
+    console.log("Database tables synchronized successfully.");
+  } catch (error) {
+    console.error("Unable to initialize database:", error);
+    setTimeout(initDB, 5000);
+  }
+};
+
+// Initialize DB and start server
+const startApp = async () => {
+  await initDB();
+  app.listen(3000, () => {
+    console.log(`Server running at http://127.0.0.1:3000/`);
+  });
+};
+
+startApp();
