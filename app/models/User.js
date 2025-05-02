@@ -1,9 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
-import { DataTypes } from "sequelize";
-import sequelize from "../services/db.js";
+import { v4 as uuidv4 } from 'uuid';
+import { DataTypes } from 'sequelize';
+import sequelize from '../services/db.js';
 
 const User = sequelize.define(
- "User",
+ 'User',
  {
   id: {
    type: DataTypes.UUID,
@@ -14,7 +14,19 @@ const User = sequelize.define(
    type: DataTypes.STRING,
    allowNull: false,
   },
-
+  firstName: {
+   type: DataTypes.VIRTUAL,
+   get() {
+    return this.fullName ? this.fullName.split(' ')[0] : '';
+   },
+  },
+  lastName: {
+   type: DataTypes.VIRTUAL,
+   get() {
+    const nameParts = this.fullName ? this.fullName.split(' ') : [];
+    return nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+   },
+  },
   email: {
    type: DataTypes.STRING,
    allowNull: false,
@@ -26,10 +38,10 @@ const User = sequelize.define(
   },
 
   role: {
-   type: DataTypes.ENUM("user", "admin"),
+   type: DataTypes.ENUM('user', 'admin'),
   },
   provider: {
-   type: DataTypes.ENUM("google", "email"),
+   type: DataTypes.ENUM('google', 'email'),
    allowNull: false,
   },
   profilePhoto: {
@@ -45,7 +57,7 @@ const User = sequelize.define(
    defaultValue: DataTypes.NOW,
   },
  },
- { tableName: "Users", timestamps: true }
+ { tableName: 'Users', timestamps: true }
 );
 
 export default User;

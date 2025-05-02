@@ -1,11 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
-import { DataTypes } from "sequelize";
-import sequelize from "../services/db.js";
-import JobSeekerDetail from "./JobSeekerDetail.js";
+import { DataTypes } from 'sequelize';
+import sequelize from '../services/db.js';
+import JobSeekerDetail from './JobSeekerDetails.js';
 
 const Education = sequelize.define(
- "Education",
+ 'Education',
  {
   id: {
    type: DataTypes.UUID,
@@ -15,7 +15,7 @@ const Education = sequelize.define(
   jobSeekerDetailId: {
    type: DataTypes.UUID,
    allowNull: false,
-   references: { model: JobSeekerDetail, key: "id" },
+   references: { model: JobSeekerDetail, key: 'id' },
   },
   degree: {
    type: DataTypes.STRING(255),
@@ -31,18 +31,18 @@ const Education = sequelize.define(
   },
   startDate: {
    type: DataTypes.DATEONLY,
+   comment: 'Always set to first day of the month',
   },
   endDate: {
    type: DataTypes.DATEONLY,
+   allowNull: true,
+   comment: 'Always set to first day of the month',
   },
  },
  {
-  tableName: "Education",
+  tableName: 'Education',
   timestamps: false,
  }
 );
-
-JobSeekerDetail.hasMany(Education, { foreignKey: "jobSeekerDetailId" });
-Education.belongsTo(JobSeekerDetail, { foreignKey: "jobSeekerDetailId" });
 
 export default Education;

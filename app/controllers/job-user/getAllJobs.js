@@ -1,5 +1,5 @@
-import Job from "../models/Job.js";
-import Joi from "joi";
+import Job from '../../models/Job.js';
+import Joi from 'joi';
 
 const querySchema = Joi.object({
  page: Joi.number().integer().min(1).optional(),
@@ -20,24 +20,30 @@ const getAllJobsController = {
   try {
    const offset = (page - 1) * limit;
    const jobs = await Job.findAll({
+    where: {
+     status: 'approved', // Only show approved jobs to public
+    },
     attributes: [
-     "id",
-     "title",
-     "description",
-     "location",
-     "company",
-
-     "createdAt",
+     'id',
+     'title',
+     'description',
+     'location',
+     'company',
+     ['approvedAt', 'postedAt'],
     ],
     offset,
     limit,
-    order: [["createdAt", "DESC"]],
+    order: [['createdAt', 'DESC']],
    });
 
-   const totalCount = await Job.count();
+   const totalCount = await Job.count({
+    where: {
+     status: 'approved',
+    },
+   });
 
    res.status(200).json({
-    message: "Jobs retrieved successfully",
+    message: 'Jobs retrieved successfully',
     data: {
      jobs,
      pagination: {
@@ -52,7 +58,7 @@ const getAllJobsController = {
    console.error(error);
    res
     .status(500)
-    .json({ message: "Error retrieving jobs", error: error.message });
+    .json({ message: 'Error retrieving jobs', error: error.message });
   }
  },
 };
