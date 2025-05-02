@@ -13,7 +13,8 @@ block content
         p Add education
         i.fa-solid.fa-plus.modal-trigger(data-target='#modal-education', style='cursor: pointer;')
 
-    // Include the modal component for skills
+      // Include the modal component for skills
+
     div#modal-skills.modal-overlay.hidden
       div.modal
         div.modal-header
@@ -35,8 +36,9 @@ block content
                 option(value='5') 5 years
                 option(value='5+') More than 5 years
         div.modal-footer
-          button.modal-close-btn Cancel
-          button.modal-save-btn Save
+          button.modal-close-btn(type='button') Cancel
+          button.modal-save-btn(type='button') Save
+
 
     // Include the modal component for work experience
     div#modal-experience.modal-overlay.hidden
@@ -167,10 +169,20 @@ block content
           button.modal-close-btn Cancel
           button.modal-save-btn Save      
 
+
+block styles
+  link(rel='stylesheet', href='/css/modal.css')
+  link(rel='stylesheet', href='/css/about.css')
+  link(rel='stylesheet', href='/css/global-styles.css')
+  link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css")
+
 block scripts
+  script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+  script(src='https://cdn.jsdelivr.net/npm/yup@0.32.9/dist/yup.min.js')
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js")
   script(src='/js/about.js')
   script(src='/js/modal.js')
 
-block styles
-  link(rel='stylesheet', href='/css/about.css')
-  link(rel='stylesheet', href='/css/modal.css')
+  script(src='/models/Skills.js')
+
+
