@@ -4,15 +4,18 @@ mixin navbar(bgColor = '#FAFAFA', maxWidth = '1280px', width='90%', padding='0px
       a.logo-link(href='/')
         img.logo-img(src='/assets/images/logo.svg' alt='Logo' class='logo')
       ul.navbar-menu
-        li: a.link(href='/jobs') Jobs
+        li: a.link(href='/jobs') Jobsdddd
         li.divider | 
-        if currentPage !== 'dashboard'
-          div.auth-links
-            li: a.link(href='/login') Login
-            li.signup
-              a.link.signup-btn(href='/signup')
-                img(src='/assets/images/login-icon.svg' alt='Login Icon')
-                span SignUp
+        //- Auth links shown/hidden based on token, not page
+        div.auth-links.auth-section
+          li: a.link(href='/login') Login
+          li.signup
+            a.link.signup-btn(href='/signup')
+              img(src='/assets/images/login-icon.svg' alt='Login Icon')
+              span SignUp
+        div.user-profile.auth-section.hidden
+          li: a.link(href='/dashboard') Dashboard
+          li: a.link.logout-btn(href='#') Logout
 
 block styles
   link(rel='stylesheet', href='/css/navbar.css')
