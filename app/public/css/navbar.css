@@ -20,7 +20,6 @@
   margin: 0 auto;
 }
 
-
 .navbar-menu {
   display: flex;
   align-items: center;
@@ -87,5 +86,18 @@
 }
 
 .logout-btn {
-  color: #ff5555;
+  background-color: #007aff;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.logout-icon {
+  color: white;
+  margin-left: 8px;
+}
+
+.logout-text {
+  color: white;
 }

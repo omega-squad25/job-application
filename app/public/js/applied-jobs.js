@@ -35,7 +35,6 @@ async function fetchAppliedJobs() {
     );
 
     const data = await res.json();
-    console.log(data, "data");
 
     if (res.ok && data.data.applications.length > 0) {
       renderJobCards(data.data.applications, container);
