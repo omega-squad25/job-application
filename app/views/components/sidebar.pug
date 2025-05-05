@@ -1,11 +1,15 @@
 div.sidebar
   div.sidebar-contents
     ul.sidebar-menu#sidebarMenu
-      li: a.link(href='/dashboard/admin', class=currentPage === 'admin' ? 'active' : '') Admin
-      li: a.link(href='/dashboard/user', class=currentPage === 'user' ? 'active' : '') User
+      
 
 block styles
   link(rel='stylesheet', href='/css/sidebar.css')
 
 block scripts
   script(src='/js/sidebar.js')
+
+
+
+
+
