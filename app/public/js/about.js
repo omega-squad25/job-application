@@ -7,11 +7,28 @@ document.addEventListener("DOMContentLoaded", function () {
   const experienceSelect = document.getElementById("experience");
   const skillsList = document.getElementById("skills-list");
   const modalOverlay = document.getElementById("modal-skills");
+  const closeButtons = document.querySelectorAll(
+    "#modal-skills .modal-close, #modal-skills .modal-close-btn"
+  );
 
-  function renderSkill(skill, experience) {
+  let currentSkillId = null;
+
+  closeButtons.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      modalOverlay.classList.add("hidden");
+      resetForm();
+    });
+  });
+
+  function renderSkill(skill, experience, id = Date.now()) {
     const li = document.createElement("li");
     li.classList.add("skill-item");
-    li.textContent = `${skill} - ${experience} year(s)`;
+
+    li.innerHTML = `
+        <span class="skill-name" data-skill="${skill}">${skill}</span>
+        <span class="skill-years" data-experience="${experience}">${experience} year(s)</span>
+        <i class="fa fa-edit edit-skill" data-id="${id}" data-skill="${skill}" data-experience="${experience}" style="cursor:pointer;"></i>
+      `;
     skillsList.appendChild(li);
   }
 
@@ -20,12 +37,27 @@ document.addEventListener("DOMContentLoaded", function () {
     experienceSelect.value = "";
   }
 
-  /* Save skill */
+  skillsList.addEventListener("click", function (event) {
+    if (event.target.classList.contains("edit-skill")) {
+      const skillId = event.target.dataset.id;
+      const skillName = event.target.dataset.skill;
+      const skillExperience = event.target.dataset.experience;
+
+      currentSkillId = skillId;
+
+      skillInput.value = skillName;
+      skillInput.disabled = true;
+      experienceSelect.value = skillExperience;
+
+      modalOverlay.classList.remove("hidden");
+    }
+  });
+
   saveBtn.addEventListener("click", async function () {
     const skill = skillInput.value.trim();
     const experience = parseInt(experienceSelect.value);
 
-    if (!skill || isNaN(!experience)) {
+    if (!skill || isNaN(experience)) {
       toastr.error("Please fill in all fields.");
       return;
     }
@@ -38,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
         toastr.error("Authentication token not found");
         return;
       }
+
       const response = await fetch(`${BASE_URL}/api/skills/`, {
         method: "POST",
         headers: {
@@ -48,19 +81,23 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save skill.");
+        const errorMsg = await response.text();
+        throw new Error(errorMsg || "Failed to save skill.");
       }
 
       const data = await response.json();
 
-      renderSkill(data.skill, data.experience);
+      renderSkill(data.name, data.yearsOfExperience);
       toastr.success("Skill saved!");
 
       resetForm();
       modalOverlay.classList.add("hidden");
     } catch (error) {
       console.error(error);
-      toastr.error("Error saving skill.");
+      toastr.error("Error saving skill: " + error.message);
+      renderSkill(skill, experience);
+      modalOverlay.classList.add("hidden");
+      resetForm();
     }
   });
 });
@@ -71,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const saveBtn = document.querySelector("#modal-experience .modal-save-btn");
   const modal = document.getElementById("modal-experience");
-  const workExpSection = document.querySelector(".about-info"); // or use a new section if needed
+  const workExpSection = document.querySelector(".about-info");
 
   saveBtn.addEventListener("click", async function () {
     const jobTitle = document.getElementById("job-title").value.trim();
@@ -145,16 +182,11 @@ document.addEventListener("DOMContentLoaded", function () {
           <p>${savedData.responsibility}</p>
         `;
 
-      // You can append to a dedicated container instead of `about-info`
       workExpSection.appendChild(item);
-
-      // Close modal
       modal.classList.add("hidden");
 
-      // Clear form
       modal.querySelector("form").reset();
 
-      // Show success toast
       toastr.success("Work experience saved successfully!");
     } catch (err) {
       toastr.error(err.message || "Something went wrong");
@@ -235,10 +267,8 @@ document.addEventListener("DOMContentLoaded", function () {
         toastr.success("Education added successfully!");
         modal.classList.add("hidden");
 
-        // Optionally reset form
         modal.querySelector("form").reset();
 
-        // Optionally display saved data (addEducationToDOM function)
         const newData = await response.json();
         addEducationToDOM(newData);
       } else {
@@ -251,7 +281,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Close modal logic
   closeBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       modal.classList.add("hidden");
