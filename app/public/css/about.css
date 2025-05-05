@@ -27,3 +27,43 @@
   padding: 20px 0;
   cursor: pointer;
 }
+
+#skills-list {
+  margin-left: 0;
+  margin-top: -20px;
+  margin-bottom: 20px;
+  padding-left: 10px;
+  list-style-type: disc;
+  color: #606261
+  ;
+}
+.skill-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 10px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.skill-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.skill-years {
+  flex: 0 0 100px;
+  text-align:center;
+  color: #666;
+}
+
+.edit-skill {
+  flex: 0 0 24px;
+  color: #606261;
+}
+
+
+

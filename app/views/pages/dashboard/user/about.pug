@@ -3,9 +3,10 @@ block content
     h1.about-title About
     p.about-text Updating your information will offer you the most relevant content 
     div.about-info
-      div.about-info-item.modal-trigger(data-target='#modal-skills', style='cursor: pointer;')
+      div.about-info-item
         p Add skills
         i.fa-solid.fa-plus.modal-trigger(data-target='#modal-skills', style='cursor: pointer;')
+      ul#skills-list
       div.about-info-item.modal-trigger(data-target='#modal-experience', style='cursor: pointer;')
         p Add work experience
         i.fa-solid.fa-plus.modal-trigger(data-target='#modal-experience', style='cursor: pointer;')
@@ -13,7 +14,8 @@ block content
         p Add education
         i.fa-solid.fa-plus.modal-trigger(data-target='#modal-education', style='cursor: pointer;')
 
-    // Include the modal component for skills
+
+      // Include the modal component for skills
     div#modal-skills.modal-overlay.hidden
       div.modal
         div.modal-header
@@ -181,7 +183,5 @@ block scripts
   script(src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js")
   script(src='/js/about.js')
   script(src='/js/modal.js')
-
-  script(src='/models/Skills.js')
 
 
