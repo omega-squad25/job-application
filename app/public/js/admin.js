@@ -133,7 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Received data:", data);
         renderJobs(data.data.jobs || []);
         renderStatistics(data.data.statistics || {});
       } else {

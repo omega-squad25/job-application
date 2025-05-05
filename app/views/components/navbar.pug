@@ -1,3 +1,4 @@
+
 mixin navbar(bgColor = '#FAFAFA', maxWidth = '1280px', width='90%', padding='0px 0px', currentPage = '')
   nav.navbar-container(style=`background-color: ${bgColor}`)
     div.navbar-contents(style=`max-width: ${maxWidth}; width: ${width}; padding: ${padding}`)
@@ -14,11 +15,7 @@ mixin navbar(bgColor = '#FAFAFA', maxWidth = '1280px', width='90%', padding='0px
               img(src='/assets/images/login-icon.svg' alt='Login Icon')
               span SignUp
         div.user-profile.auth-section.hidden
-          li: a.link(href='/dashboard') Dashboard
-          li: a.link.logout-btn(href='#') Logout
-
-block styles
-  link(rel='stylesheet', href='/css/navbar.css')
-
-block scripts
-  script(src='/js/navbar.js')
+          li: a.link(href='/dashboard/user') Dashboard
+          li: a.link.logout-btn(href='#')
+            span.logout-text Logout
+            i.fa-solid.fa-right-from-bracket.logout-icon

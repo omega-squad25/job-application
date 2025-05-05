@@ -1,56 +1,62 @@
 document.addEventListener("DOMContentLoaded", function () {
   const sidebarMenu = document.getElementById("sidebarMenu");
-  const logoutButton = document.querySelector(".logout-btn");
 
-  // Retrieve the user object from localStorage
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = localStorage.getItem("token");
+  if (!sidebarMenu) {
+    // Try to find the element by alternative means
+    const sidebarMenus = document.querySelectorAll(".sidebar-menu");
 
-  // Fallback: Redirect to login if user or isAdmin is missing
-  if (!user || typeof user.isAdmin === "undefined") {
-    console.warn("Missing user or isAdmin status. Redirecting to login...");
-    window.location.href = "/login";
-    return;
-  }
-
-  // Extract isAdmin from the user object
-  const isAdmin = user.isAdmin;
-
-  // Clear existing menu items
-  sidebarMenu.innerHTML = "";
-
-  // Add relevant menu
-  const menuItem = document.createElement("li");
-  const path = isAdmin ? "/dashboard/admin" : "/dashboard/user";
-  const label = isAdmin ? "Admin" : "User";
-
-  menuItem.innerHTML = `<a href="${path}" class="link ${
-    window.location.pathname === path ? "active" : ""
-  }">${label}</a>`;
-  sidebarMenu.appendChild(menuItem);
-
-  // Validate token (optional)
-  if (!token) {
-    console.error("Authentication token not found.");
-  }
-
-  // Logout functionality
-  if (logoutButton) {
-    logoutButton.addEventListener("click", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      console.log("Logout button clicked");
-
-      // Clear localStorage
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-
-      // Redirect
-      window.location.href = "/";
-    });
+    if (sidebarMenus.length > 0) {
+      // Use the first one as fallback
+      buildSidebarMenu(sidebarMenus[0]);
+    } else {
+      console.error("No sidebar menu elements found at all.");
+    }
   } else {
-    console.warn("Logout button not found.");
+    buildSidebarMenu(sidebarMenu);
+  }
+
+  function buildSidebarMenu(menuElement) {
+    // Retrieve the user object from localStorage
+    let user;
+    try {
+      const userString = localStorage.getItem("user");
+      user = userString ? JSON.parse(userString) : null;
+    } catch (e) {
+      console.error("Error parsing user data:", e);
+      user = null;
+    }
+
+    const token = localStorage.getItem("token");
+
+    // Fallback: Redirect to login if user or token is missing
+    if (!user || !token) {
+      window.location.href = "/login";
+      return;
+    }
+
+    // Extract isAdmin from the user object and convert to boolean if needed
+    const isAdmin = user.isAdmin === true || user.isAdmin === "true";
+
+    // Clear existing menu items
+    menuElement.innerHTML = "";
+
+    // Build menu based on admin status
+    if (isAdmin) {
+      // Admin only sees the admin option
+      const adminItem = document.createElement("li");
+      const adminPath = "/dashboard/admin";
+      adminItem.innerHTML = `<a href="${adminPath}" class="link ${
+        window.location.pathname === adminPath ? "active" : ""
+      }">Admin Dashboard</a>`;
+      menuElement.appendChild(adminItem);
+    } else {
+      // Regular users only see the user option
+      const userItem = document.createElement("li");
+      const userPath = "/dashboard/user";
+      userItem.innerHTML = `<a href="${userPath}" class="link ${
+        window.location.pathname === userPath ? "active" : ""
+      }">User Dashboard</a>`;
+      menuElement.appendChild(userItem);
+    }
   }
 });
-
-
