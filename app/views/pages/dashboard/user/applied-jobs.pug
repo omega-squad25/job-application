@@ -1,0 +1,18 @@
+block content
+  div.job-contents
+    div.title-wrapper
+      h1.job-title My Jobs
+      p.job-text See all your job application activities here
+
+    div#applied-jobs-container
+
+block scripts
+  script(src='/js/applied-jobs.js')
+  script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js")
+
+block styles
+  link(rel='stylesheet', href='/css/my-jobs.css')
+  link(rel='stylesheet', href='/css/jobs.css')  
+  link(rel='stylesheet', href='/css/global-styles.css')
+  link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css")
