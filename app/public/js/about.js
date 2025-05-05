@@ -46,7 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
       currentSkillId = skillId;
 
       skillInput.value = skillName;
-      skillInput.disabled = true;
       experienceSelect.value = skillExperience;
 
       modalOverlay.classList.remove("hidden");
@@ -87,8 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const data = await response.json();
 
-      renderSkill(data.name, data.yearsOfExperience);
-      toastr.success("Skill saved!");
+      renderSkill(data.skill.name, data.skill.yearsOfExperience);
+      toastr.success(data.message || "Skill saved!");
 
       resetForm();
       modalOverlay.classList.add("hidden");
@@ -171,7 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const savedData = await response.json();
 
-      // Render new item
       const item = document.createElement("div");
       item.className = "work-exp-item";
       item.innerHTML = `
@@ -223,6 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
       10
     );
 
+
     if (
       !institution ||
       !fieldOfStudy ||
@@ -264,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
-        toastr.success("Education added successfully!");
+        toastr.success("Education Added successfully!");
         modal.classList.add("hidden");
 
         modal.querySelector("form").reset();
@@ -287,36 +286,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+ 
   function addEducationToDOM(data) {
     const container = document.querySelector(".about-info");
     const educationEntry = document.createElement("div");
-    educationEntry.classList.add("about-info-item");
+    educationEntry.classList.add("skill-item");
     educationEntry.innerHTML = `
-        <p><strong>${data.degree}</strong> in ${data.course}</p>
-        <p>${data.institution}</p>
-        <p>${monthName(data.startMonth)} ${data.startYear} - ${monthName(
-      data.endMonth
-    )} ${data.endYear}</p>
+        <span class="skill-name" > <strong>${data.education.degree}</strong> in ${data.education.fieldOfStudy}</span>
+        <span class="skill-name">${data.education.institution}</span>
+        <span class="education-years">${data.education.startDate} - ${data.education.endDate}</span>
+        <i class="fa fa-edit edit-education" data-id="${data.education.id}" data-edu="${data.education.degree}" data-study="${data.education.fieldOfStudy}"
+        data-inst="${data.education.institution}" data-SD="${data.education.startMonth}" data-ED="${data.education.endMonth}" data-SY="${data.education.startYear} 
+        data-SD="${data.education.endYear}"
+        style="cursor:pointer;"> </i>
       `;
     container.appendChild(educationEntry);
   }
 
-  function monthName(month) {
-    const months = [
-      "",
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    return months[month] || "";
-  }
 });
