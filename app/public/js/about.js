@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
-        toastr.success("Education added successfully!");
+        toastr.success("Education Added successfully!");
         modal.classList.add("hidden");
 
         modal.querySelector("form").reset();
