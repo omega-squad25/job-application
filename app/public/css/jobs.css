@@ -215,3 +215,14 @@
   padding-top: 20px;
   padding: 30px;
 }
+
+
+.names {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+}
+.name {
+  width: 100%;
+
+}
