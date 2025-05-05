@@ -1,9 +1,14 @@
 div
-  div.empty-job-state
-    h1.job-title No saved jobs yet! ⭐
-    p Find new opportunities and manage your job search progress here.
-    ul.link-wrapper
-        li: a.job-link(href='/jobs') Browse Jobs
+  div#saved-jobs-container
 
 block styles
-  link(rel='stylesheet', href='/css/my-jobs.css')  
+  link(rel='stylesheet', href='/css/my-jobs.css')
+  link(rel='stylesheet', href='/css/jobs.css')  
+  link(rel='stylesheet', href='/css/global-styles.css')
+  link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css")
+
+
+block scripts
+  script(src='/js/saved-jobs.js')
+  script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js")
