@@ -1,4 +1,4 @@
-// jobs.js - Combined file for job listings and application functionality
+// jobs.js - Enhanced with client-side search functionality
 document.addEventListener("DOMContentLoaded", async () => {
   const BASE_URL = "http://localhost:3000";
   // === JOB LISTING FUNCTIONALITY ===
@@ -8,6 +8,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const companyNameEl = document.querySelector(".company-name");
   const jobDescriptionEl = document.querySelector(".job-description");
   const easyApplyBtn = document.querySelector(".easy-apply");
+  const searchForm = document.querySelector(".search-form");
+  const searchTitleInput = searchForm.querySelector(
+    "input[placeholder='Job titles']"
+  );
+  const searchLocationInput = searchForm.querySelector(
+    "input[placeholder='Location']"
+  );
+
+  // Store all jobs for client-side searching
+  let allJobs = [];
 
   // Current job ID to be used when submitting the application
   let currentJobId = null;
@@ -85,15 +95,52 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Load jobs from API
-  try {
-    const response = await fetch(`${BASE_URL}/api/jobs`);
-    const result = await response.json();
+  // Function to filter jobs based on search criteria
+  function filterJobs(title, location) {
+    // Convert search terms to lowercase for case-insensitive matching
+    const titleLower = title.toLowerCase();
+    const locationLower = location.toLowerCase();
 
-    if (result.message === "Jobs retrieved successfully") {
-      const jobs = result.data.jobs;
-      jobsContainer.innerHTML = "";
+    return allJobs.filter((job) => {
+      // Match both title and location if both are provided
+      if (titleLower && locationLower) {
+        return (
+          job.title.toLowerCase().includes(titleLower) &&
+          job.location.toLowerCase().includes(locationLower)
+        );
+      }
+      // Match only title if only title is provided
+      else if (titleLower) {
+        return job.title.toLowerCase().includes(titleLower);
+      }
+      // Match only location if only location is provided
+      else if (locationLower) {
+        return job.location.toLowerCase().includes(locationLower);
+      }
+      // If no search criteria, return all jobs
+      return true;
+    });
+  }
 
+  // Function to display filtered jobs
+  function displayJobs(jobs) {
+    jobsContainer.innerHTML = "";
+
+    if (jobs.length === 0) {
+      // Display a message when no jobs match the search criteria
+      const noJobsMessage = document.createElement("div");
+      noJobsMessage.classList.add("no-jobs-message");
+      noJobsMessage.textContent =
+        "No jobs match your search criteria. Try different keywords.";
+      jobsContainer.appendChild(noJobsMessage);
+
+      // Clear job details
+      jobTitleEl.textContent = "";
+      jobLocationEl.textContent = "";
+      companyNameEl.textContent = "";
+      jobDescriptionEl.textContent = "";
+      currentJobId = null;
+    } else {
       // Populate the job cards
       jobs.forEach((job, index) => {
         const jobCard = createJobCard(job);
@@ -105,8 +152,69 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       });
     }
+  }
+
+  // Handle search form submission
+  searchForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const titleSearch = searchTitleInput.value.trim();
+    const locationSearch = searchLocationInput.value.trim();
+
+    // Filter jobs based on search criteria
+    const filteredJobs = filterJobs(titleSearch, locationSearch);
+
+    // Display filtered jobs
+    displayJobs(filteredJobs);
+  });
+
+  // Add input event listeners for real-time filtering (optional)
+  // Uncomment these if you want search results to update as the user types
+  /*
+  searchTitleInput.addEventListener("input", debounce(function() {
+    const titleSearch = searchTitleInput.value.trim();
+    const locationSearch = searchLocationInput.value.trim();
+    const filteredJobs = filterJobs(titleSearch, locationSearch);
+    displayJobs(filteredJobs);
+  }, 300));
+
+  searchLocationInput.addEventListener("input", debounce(function() {
+    const titleSearch = searchTitleInput.value.trim();
+    const locationSearch = searchLocationInput.value.trim();
+    const filteredJobs = filterJobs(titleSearch, locationSearch);
+    displayJobs(filteredJobs);
+  }, 300));
+  */
+
+  // Debounce function to limit how often the search executes while typing
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  // Load jobs from API
+  try {
+    const response = await fetch(`${BASE_URL}/api/jobs`);
+    const result = await response.json();
+
+    if (result.message === "Jobs retrieved successfully") {
+      // Store all jobs for client-side searching
+      allJobs = result.data.jobs;
+
+      // Display all jobs initially
+      displayJobs(allJobs);
+    }
   } catch (error) {
     console.error("Error fetching jobs:", error);
+    // Show error message to user
+    toastr.error("Failed to load jobs. Please try again later.");
   }
 
   // === JOB APPLICATION FUNCTIONALITY ===

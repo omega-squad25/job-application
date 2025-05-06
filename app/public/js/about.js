@@ -49,7 +49,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function resetForm() {
     skillInput.value = "";
     experienceSelect.value = "";
-    currentSkillId = null; 
+    currentSkillId = null;
+    skillInput.disabled = false;
   }
 
   skillsList.addEventListener("click", function (event) {
@@ -60,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       currentSkillId = skillId;
       skillInput.value = skillName;
+      skillInput.disabled = true;
       experienceSelect.value = skillExperience;
 
       modalOverlay.classList.remove("hidden");
@@ -83,6 +85,25 @@ document.addEventListener("DOMContentLoaded", function () {
         BASE_URL
       );
       if (updated) {
+        const skillItem = skillsList
+          .querySelector(`.edit-skill[data-id="${currentSkillId}"]`)
+          .closest(".skill-item");
+
+        if (skillItem) {
+          skillItem.querySelector(".skill-name").textContent = skill;
+          skillItem.querySelector(".skill-name").dataset.skill = skill;
+
+          skillItem.querySelector(
+            ".skill-years"
+          ).textContent = `${experience} year(s)`;
+          skillItem.querySelector(".skill-years").dataset.experience =
+            experience;
+
+          skillItem.querySelector(".edit-skill").dataset.skill = skill;
+          skillItem.querySelector(".edit-skill").dataset.experience =
+            experience;
+        }
+
         resetForm();
         modalOverlay.classList.add("hidden");
       }
@@ -149,107 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-
-// document.addEventListener("DOMContentLoaded", function () {
-//   const BASE_URL = "http://localhost:3000";
-//   const saveBtn = document.querySelector("#modal-skills .modal-save-btn");
-//   const skillInput = document.getElementById("skill");
-//   const experienceSelect = document.getElementById("experience");
-//   const skillsList = document.getElementById("skills-list");
-//   const modalOverlay = document.getElementById("modal-skills");
-//   const closeButtons = document.querySelectorAll(
-//     "#modal-skills .modal-close, #modal-skills .modal-close-btn"
-//   );
-
-//   let currentSkillId = null;
-
-//   closeButtons.forEach((btn) => {
-//     btn.addEventListener("click", function () {
-//       modalOverlay.classList.add("hidden");
-//       resetForm();
-//     });
-//   });
-
-//   function renderSkill(skill, experience, id = Date.now()) {
-//     const li = document.createElement("li");
-//     li.classList.add("skill-item");
-
-//     li.innerHTML = `
-//         <span class="skill-name" data-skill="${skill}">${skill}</span>
-//         <span class="skill-years" data-experience="${experience}">${experience} year(s)</span>
-//         <i class="fa fa-edit edit-skill" data-id="${id}" data-skill="${skill}" data-experience="${experience}" style="cursor:pointer;"></i>
-//       `;
-//     skillsList.appendChild(li);
-//   }
-
-//   function resetForm() {
-//     skillInput.value = "";
-//     experienceSelect.value = "";
-//   }
-
-//   skillsList.addEventListener("click", function (event) {
-//     if (event.target.classList.contains("edit-skill")) {
-//       const skillId = event.target.dataset.id;
-//       const skillName = event.target.dataset.skill;
-//       const skillExperience = event.target.dataset.experience;
-
-//       currentSkillId = skillId;
-
-//       skillInput.value = skillName;
-//       experienceSelect.value = skillExperience;
-
-//       modalOverlay.classList.remove("hidden");
-//     }
-//   });
-
-//   saveBtn.addEventListener("click", async function () {
-//     const skill = skillInput.value.trim();
-//     const experience = parseInt(experienceSelect.value);
-
-//     if (!skill || isNaN(experience)) {
-//       toastr.error("Please fill in all fields.");
-//       return;
-//     }
-
-//     try {
-//       const token = localStorage.getItem("token");
-//       const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
-
-//       if (!parsedToken) {
-//         toastr.error("Authentication token not found");
-//         return;
-//       }
-
-//       const response = await fetch(`${BASE_URL}/api/skills/`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${parsedToken}`,
-//         },
-//         body: JSON.stringify({ name: skill, yearsOfExperience: experience }),
-//       });
-
-//       if (!response.ok) {
-//         const errorMsg = await response.text();
-//         throw new Error(errorMsg || "Failed to save skill.");
-//       }
-
-//       const data = await response.json();
-
-//       renderSkill(data.skill.name, data.skill.yearsOfExperience);
-//       toastr.success(data.message || "Skill saved!");
-
-//       resetForm();
-//       modalOverlay.classList.add("hidden");
-//     } catch (error) {
-//       console.error(error);
-//       toastr.error("Error saving skill: " + error.message);
-//       renderSkill(skill, experience);
-//       modalOverlay.classList.add("hidden");
-//       resetForm();
-//     }
-//   });
-// });
 
 /*ADD EXPERIENCE MODAL*/
 document.addEventListener("DOMContentLoaded", function () {
@@ -343,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /*ADD EDUCATION MODAL*/
-document.addEventListener("DOMContentLoaded", function () {
+/* document.addEventListener("DOMContentLoaded", function () {
   const BASE_URL = "http://localhost:3000";
 
   const saveBtn = document.querySelector("#modal-education .modal-save-btn");
@@ -450,4 +370,209 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
     container.appendChild(educationEntry);
   }
+}); */
+
+document.addEventListener("DOMContentLoaded", function () {
+  const BASE_URL = "http://localhost:3000";
+  const saveBtn = document.querySelector("#modal-education .modal-save-btn");
+  const modal = document.querySelector("#modal-education");
+  const closeBtns = modal.querySelectorAll(".modal-close, .modal-close-btn");
+  const educationList = document.querySelector(".about-info");
+
+  let currentEducationId = null;
+
+  function resetEducationForm() {
+    modal.querySelector("form").reset();
+    currentEducationId = null;
+  }
+
+  async function updateEducation(
+    id,
+    institution,
+    fieldOfStudy,
+    degree,
+    startMonth,
+    startYear,
+    endMonth,
+    endYear
+  ) {
+    const token = localStorage.getItem("token");
+    const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
+
+    if (!parsedToken) {
+      toastr.error("Authentication token not found");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/education/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${parsedToken}`,
+        },
+        body: JSON.stringify({
+          institution,
+          fieldOfStudy,
+          degree,
+          startMonth,
+          startYear,
+          endMonth,
+          endYear,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorMsg = await response.text();
+        throw new Error(errorMsg || "Failed to update education.");
+      }
+
+      const data = await response.json();
+      toastr.success(data.message || "Education updated!");
+      return data;
+    } catch (error) {
+      toastr.error("Error updating education: " + error.message);
+      console.error(error);
+    }
+  }
+
+  educationList.addEventListener("click", function (event) {
+    if (event.target.classList.contains("edit-education")) {
+      const btn = event.target;
+      currentEducationId = btn.dataset.id;
+      modal.querySelector("#institution").value = btn.dataset.inst || "";
+      modal.querySelector("#course").value = btn.dataset.edu || "";
+      modal.querySelector("#degree").value = btn.dataset.edu || "";
+      modal.querySelector("#start-month").value = btn.dataset.sd || "";
+      modal.querySelector("#start-year").value = btn.dataset.sy || "";
+      modal.querySelector("#end-month").value = btn.dataset.ed || "";
+      modal.querySelector("#end-year").value = btn.dataset.ey || "";
+
+      modal.classList.remove("hidden");
+    }
+  });
+
+  saveBtn.addEventListener("click", async () => {
+    const institution = modal.querySelector("#institution").value.trim();
+    const fieldOfStudy = modal.querySelector("#course").value.trim();
+    const degree = modal.querySelector("#degree").value.trim();
+    const startMonth = parseInt(modal.querySelector("#start-month").value, 10);
+    const startYear = parseInt(modal.querySelector("#start-year").value, 10);
+    const endMonth = parseInt(modal.querySelector("#end-month").value, 10);
+    const endYear = parseInt(modal.querySelector("#end-year").value, 10);
+
+    if (
+      !institution ||
+      !fieldOfStudy ||
+      !degree ||
+      isNaN(startMonth) ||
+      isNaN(startYear) ||
+      isNaN(endMonth) ||
+      isNaN(endYear)
+    ) {
+      toastr.error("Please fill in all fields.");
+      return;
+    }
+
+    if (currentEducationId) {
+      const updated = await updateEducation(
+        currentEducationId,
+        institution,
+        fieldOfStudy,
+        degree,
+        startMonth,
+        startYear,
+        endMonth,
+        endYear
+      );
+
+      if (updated) {
+        const eduItem = educationList
+          .querySelector(`.edit-education[data-id="${currentEducationId}"]`)
+          .closest(".skill-item");
+
+        if (eduItem) {
+          eduItem.querySelector(
+            ".skill-name"
+          ).innerHTML = `<strong>${degree}</strong> in ${fieldOfStudy}`;
+          eduItem.querySelectorAll(".skill-name")[1].textContent = institution;
+          eduItem.querySelector(
+            ".education-years"
+          ).textContent = `${startMonth}/${startYear} - ${endMonth}/${endYear}`;
+
+          const editIcon = eduItem.querySelector(".edit-education");
+          editIcon.dataset.edu = fieldOfStudy;
+          editIcon.dataset.inst = institution;
+          editIcon.dataset.sd = startMonth;
+          editIcon.dataset.sy = startYear;
+          editIcon.dataset.ed = endMonth;
+          editIcon.dataset.ey = endYear;
+        }
+
+        modal.classList.add("hidden");
+        resetEducationForm();
+      }
+    } else {
+      try {
+        const token = localStorage.getItem("token");
+        const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
+
+        if (!parsedToken) {
+          toastr.error("Authentication token not found");
+          return;
+        }
+
+        const response = await fetch(`${BASE_URL}/api/education`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${parsedToken}`,
+          },
+          body: JSON.stringify({
+            institution,
+            fieldOfStudy,
+            degree,
+            startMonth,
+            startYear,
+            endMonth,
+            endYear,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorMsg = await response.text();
+          throw new Error(errorMsg || "Failed to save education.");
+        }
+
+        const data = await response.json();
+        renderEducation(data.education);
+        toastr.success(data.message || "Education added!");
+        resetEducationForm();
+        modal.classList.add("hidden");
+      } catch (error) {
+        toastr.error("Error saving education: " + error.message);
+       
+      }
+    }
+  });
+
+  function renderEducation(edu) {
+    const div = document.createElement("div");
+    div.classList.add("skill-item");
+    div.innerHTML = `
+      <span class="skill-name"><strong>${edu.degree}</strong> in ${edu.fieldOfStudy}</span>
+      <span class="skill-name">${edu.institution}</span>
+      <span class="education-years">${edu.startDate} - ${edu.endDate}</span>
+      <i class="fa fa-edit edit-education" data-id="${edu.id}" data-edu="${edu.fieldOfStudy}" data-inst="${edu.institution}"
+      data-ed="${edu.startDate}" data-ey="${edu.endDate}" style="cursor:pointer;"></i>
+      `;
+    educationList.appendChild(div);
+  }
+
+  closeBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      resetEducationForm();
+    });
+  });
 });
