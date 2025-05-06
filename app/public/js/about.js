@@ -1,5 +1,4 @@
 /*ADD SKILLS MODAL*/
-
 document.addEventListener("DOMContentLoaded", function () {
   const BASE_URL = "http://localhost:3000";
   const saveBtn = document.querySelector("#modal-skills .modal-save-btn");
@@ -11,30 +10,46 @@ document.addEventListener("DOMContentLoaded", function () {
     "#modal-skills .modal-close, #modal-skills .modal-close-btn"
   );
 
-  let currentSkillId = null;
+  async function updateSkill(skillId, skill, experience, BASE_URL) {
+    const token = localStorage.getItem("token");
+    const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
 
-  closeButtons.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      modalOverlay.classList.add("hidden");
-      resetForm();
-    });
-  });
+    if (!parsedToken) {
+      toastr.error("Authentication token not found");
+      return;
+    }
 
-  function renderSkill(skill, experience, id = Date.now()) {
-    const li = document.createElement("li");
-    li.classList.add("skill-item");
+    try {
+      const response = await fetch(`${BASE_URL}/api/skills/${skillId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${parsedToken}`,
+        },
+        body: JSON.stringify({ name: skill, yearsOfExperience: experience }),
+      });
 
-    li.innerHTML = `
-        <span class="skill-name" data-skill="${skill}">${skill}</span>
-        <span class="skill-years" data-experience="${experience}">${experience} year(s)</span>
-        <i class="fa fa-edit edit-skill" data-id="${id}" data-skill="${skill}" data-experience="${experience}" style="cursor:pointer;"></i>
-      `;
-    skillsList.appendChild(li);
+      if (!response.ok) {
+        const errorMsg = await response.text();
+        throw new Error(errorMsg || "Failed to update skill.");
+      }
+
+      const data = await response.json();
+      toastr.success(data.message || "Skill updated!");
+
+      return data;
+    } catch (error) {
+      toastr.error("Error updating skill: " + error.message);
+      console.error(error);
+    }
   }
+
+  let currentSkillId = null;
 
   function resetForm() {
     skillInput.value = "";
     experienceSelect.value = "";
+    currentSkillId = null; 
   }
 
   skillsList.addEventListener("click", function (event) {
@@ -44,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const skillExperience = event.target.dataset.experience;
 
       currentSkillId = skillId;
-
       skillInput.value = skillName;
       experienceSelect.value = skillExperience;
 
@@ -61,45 +75,181 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    try {
-      const token = localStorage.getItem("token");
-      const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
-
-      if (!parsedToken) {
-        toastr.error("Authentication token not found");
-        return;
+    if (currentSkillId) {
+      const updated = await updateSkill(
+        currentSkillId,
+        skill,
+        experience,
+        BASE_URL
+      );
+      if (updated) {
+        resetForm();
+        modalOverlay.classList.add("hidden");
       }
+    } else {
+      try {
+        const token = localStorage.getItem("token");
+        const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
 
-      const response = await fetch(`${BASE_URL}/api/skills/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${parsedToken}`,
-        },
-        body: JSON.stringify({ name: skill, yearsOfExperience: experience }),
-      });
+        if (!parsedToken) {
+          toastr.error("Authentication token not found");
+          return;
+        }
 
-      if (!response.ok) {
-        const errorMsg = await response.text();
-        throw new Error(errorMsg || "Failed to save skill.");
+        const response = await fetch(`${BASE_URL}/api/skills/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${parsedToken}`,
+          },
+          body: JSON.stringify({ name: skill, yearsOfExperience: experience }),
+        });
+
+        if (!response.ok) {
+          const errorMsg = await response.text();
+          throw new Error(errorMsg || "Failed to save skill.");
+        }
+
+        const data = await response.json();
+
+        renderSkill(
+          data.skill.name,
+          data.skill.yearsOfExperience,
+          data.skill.id
+        );
+        toastr.success(data.message || "Skill saved!");
+        resetForm();
+        modalOverlay.classList.add("hidden");
+      } catch (error) {
+        console.error(error);
+        toastr.error("Error saving skill: " + error.message);
+        renderSkill(skill, experience);
+        modalOverlay.classList.add("hidden");
+        resetForm();
       }
-
-      const data = await response.json();
-
-      renderSkill(data.skill.name, data.skill.yearsOfExperience);
-      toastr.success(data.message || "Skill saved!");
-
-      resetForm();
-      modalOverlay.classList.add("hidden");
-    } catch (error) {
-      console.error(error);
-      toastr.error("Error saving skill: " + error.message);
-      renderSkill(skill, experience);
-      modalOverlay.classList.add("hidden");
-      resetForm();
     }
   });
+
+  function renderSkill(skill, experience, id = Date.now()) {
+    const li = document.createElement("li");
+    li.classList.add("skill-item");
+
+    li.innerHTML = `
+        <span class="skill-name" data-skill="${skill}">${skill}</span>
+        <span class="skill-years" data-experience="${experience}">${experience} year(s)</span>
+        <i class="fa fa-edit edit-skill" data-id="${id}" data-skill="${skill}" data-experience="${experience}" style="cursor:pointer;"></i>
+      `;
+    skillsList.appendChild(li);
+  }
+
+  closeButtons.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      modalOverlay.classList.add("hidden");
+      resetForm();
+    });
+  });
 });
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   const BASE_URL = "http://localhost:3000";
+//   const saveBtn = document.querySelector("#modal-skills .modal-save-btn");
+//   const skillInput = document.getElementById("skill");
+//   const experienceSelect = document.getElementById("experience");
+//   const skillsList = document.getElementById("skills-list");
+//   const modalOverlay = document.getElementById("modal-skills");
+//   const closeButtons = document.querySelectorAll(
+//     "#modal-skills .modal-close, #modal-skills .modal-close-btn"
+//   );
+
+//   let currentSkillId = null;
+
+//   closeButtons.forEach((btn) => {
+//     btn.addEventListener("click", function () {
+//       modalOverlay.classList.add("hidden");
+//       resetForm();
+//     });
+//   });
+
+//   function renderSkill(skill, experience, id = Date.now()) {
+//     const li = document.createElement("li");
+//     li.classList.add("skill-item");
+
+//     li.innerHTML = `
+//         <span class="skill-name" data-skill="${skill}">${skill}</span>
+//         <span class="skill-years" data-experience="${experience}">${experience} year(s)</span>
+//         <i class="fa fa-edit edit-skill" data-id="${id}" data-skill="${skill}" data-experience="${experience}" style="cursor:pointer;"></i>
+//       `;
+//     skillsList.appendChild(li);
+//   }
+
+//   function resetForm() {
+//     skillInput.value = "";
+//     experienceSelect.value = "";
+//   }
+
+//   skillsList.addEventListener("click", function (event) {
+//     if (event.target.classList.contains("edit-skill")) {
+//       const skillId = event.target.dataset.id;
+//       const skillName = event.target.dataset.skill;
+//       const skillExperience = event.target.dataset.experience;
+
+//       currentSkillId = skillId;
+
+//       skillInput.value = skillName;
+//       experienceSelect.value = skillExperience;
+
+//       modalOverlay.classList.remove("hidden");
+//     }
+//   });
+
+//   saveBtn.addEventListener("click", async function () {
+//     const skill = skillInput.value.trim();
+//     const experience = parseInt(experienceSelect.value);
+
+//     if (!skill || isNaN(experience)) {
+//       toastr.error("Please fill in all fields.");
+//       return;
+//     }
+
+//     try {
+//       const token = localStorage.getItem("token");
+//       const parsedToken = token ? token.replace(/^"(.*)"$/, "$1") : null;
+
+//       if (!parsedToken) {
+//         toastr.error("Authentication token not found");
+//         return;
+//       }
+
+//       const response = await fetch(`${BASE_URL}/api/skills/`, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${parsedToken}`,
+//         },
+//         body: JSON.stringify({ name: skill, yearsOfExperience: experience }),
+//       });
+
+//       if (!response.ok) {
+//         const errorMsg = await response.text();
+//         throw new Error(errorMsg || "Failed to save skill.");
+//       }
+
+//       const data = await response.json();
+
+//       renderSkill(data.skill.name, data.skill.yearsOfExperience);
+//       toastr.success(data.message || "Skill saved!");
+
+//       resetForm();
+//       modalOverlay.classList.add("hidden");
+//     } catch (error) {
+//       console.error(error);
+//       toastr.error("Error saving skill: " + error.message);
+//       renderSkill(skill, experience);
+//       modalOverlay.classList.add("hidden");
+//       resetForm();
+//     }
+//   });
+// });
 
 /*ADD EXPERIENCE MODAL*/
 document.addEventListener("DOMContentLoaded", function () {
@@ -221,7 +371,6 @@ document.addEventListener("DOMContentLoaded", function () {
       10
     );
 
-
     if (
       !institution ||
       !fieldOfStudy ||
@@ -286,7 +435,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
- 
   function addEducationToDOM(data) {
     const container = document.querySelector(".about-info");
     const educationEntry = document.createElement("div");
@@ -302,5 +450,4 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
     container.appendChild(educationEntry);
   }
-
 });
